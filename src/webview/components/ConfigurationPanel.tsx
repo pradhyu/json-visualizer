@@ -65,13 +65,27 @@ export const ConfigurationPanel: React.FC<ConfigurationPanelProps> = ({
         <div className="configuration-panel">
             <h3>Array Configurations</h3>
             
-            <button 
-                onClick={handleAddNew}
-                className="add-config-button"
-                disabled={editingConfig !== null}
-            >
-                + Add Configuration
-            </button>
+            <div className="config-actions">
+                <button 
+                    onClick={handleAddNew}
+                    className="add-config-button"
+                    disabled={editingConfig !== null}
+                >
+                    + Add Configuration
+                </button>
+                <button 
+                    onClick={() => {
+                        // Send message to open config file
+                        (window as any).vscodeApi?.postMessage({
+                            type: 'openConfigFile'
+                        });
+                    }}
+                    className="edit-json-button"
+                    title="Edit timeline-config.json file directly"
+                >
+                    📝 Edit JSON Config
+                </button>
+            </div>
 
             <div className="config-list">
                 {configurations.map((config, index) => (

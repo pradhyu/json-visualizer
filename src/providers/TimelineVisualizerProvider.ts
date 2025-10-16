@@ -304,6 +304,10 @@ export class TimelineVisualizerProvider implements vscode.WebviewPanelSerializer
                 await this._browseDirectory();
                 break;
             
+            case 'openConfigFile':
+                await this.openConfigFile();
+                break;
+            
             default:
                 console.warn('Unknown message type:', message.type);
         }

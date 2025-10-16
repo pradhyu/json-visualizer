@@ -408,10 +408,16 @@ body {
     font-weight: 600;
 }
 
-.add-config-button {
+.config-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.add-config-button, .edit-json-button {
     width: 100%;
     padding: 8px;
-    margin-bottom: 16px;
     background-color: var(--vscode-button-background);
     color: var(--vscode-button-foreground);
     border: 1px solid var(--vscode-button-border);
@@ -420,13 +426,22 @@ body {
     font-size: 12px;
 }
 
-.add-config-button:hover {
+.add-config-button:hover, .edit-json-button:hover {
     background-color: var(--vscode-button-hoverBackground);
 }
 
 .add-config-button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.edit-json-button {
+    background-color: var(--vscode-button-secondaryBackground);
+    color: var(--vscode-button-secondaryForeground);
+}
+
+.edit-json-button:hover {
+    background-color: var(--vscode-button-secondaryHoverBackground);
 }
 
 .config-list {
