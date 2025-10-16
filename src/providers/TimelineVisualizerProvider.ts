@@ -159,17 +159,8 @@ export class TimelineVisualizerProvider implements vscode.WebviewPanelSerializer
         if (!this._panel) return;
 
         try {
-            const fileContent = await vscode.workspace.fs.readFile(uri);
-            const jsonContent = JSON.parse(fileContent.toString());
-            
-            this._panel.webview.postMessage({
-                type: 'fileLoaded',
-                data: {
-                    filePath: uri.fsPath,
-                    fileName: path.basename(uri.fsPath),
-                    content: jsonContent
-                }
-            });
+            // Use the existing _loadFile method which properly processes the file
+            await this._loadFile(uri.fsPath);
         } catch (error) {
             vscode.window.showErrorMessage(`Failed to load JSON file: ${error}`);
         }
@@ -325,11 +316,6 @@ export class TimelineVisualizerProvider implements vscode.WebviewPanelSerializer
     private async _sendInitialData(): Promise<void> {
         if (!this._panel) return;
 
-        // Try to load sample data if no data is currently loaded
-        if (this._currentData.entities.length === 0) {
-            await this._loadSampleData();
-        }
-
         this._panel.webview.postMessage({
             type: 'initialData',
             data: {
@@ -340,35 +326,7 @@ export class TimelineVisualizerProvider implements vscode.WebviewPanelSerializer
         });
     }
 
-    /**
-     * Load sample data for demonstration
-     */
-    private async _loadSampleData(): Promise<void> {
-        try {
-            const sampleFilePath = vscode.Uri.joinPath(this._extensionUri, 'sample-data', 'demo-timeline.json');
-            const fileContent = await vscode.workspace.fs.readFile(sampleFilePath);
-            const jsonContent = JSON.parse(fileContent.toString());
-            
-            const parsedData = await this._jsonParser.parseFile(sampleFilePath.fsPath, jsonContent, this._currentData.configurations);
-            
-            // Update current data
-            this._currentData.entities = parsedData.entities;
-            this._currentData.selectedFiles = [parsedData.fileName];
-            
-            // Transform data
-            const visualizationData = this._dataTransformer.transformVisualizationData(
-                this._currentData.entities,
-                this._currentData.configurations,
-                this._currentData.selectedFiles,
-                this._currentData.filterState
-            );
-            
-            this._currentData = visualizationData;
-        } catch (error) {
-            // If sample data fails to load, just continue with empty data
-            console.warn('Failed to load sample data:', error);
-        }
-    }
+
 
     /**
      * Load a single file

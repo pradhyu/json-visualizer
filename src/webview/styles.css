@@ -649,6 +649,9 @@ body {
     border: 1px solid var(--vscode-panel-border);
     border-radius: 4px;
     background-color: var(--vscode-editor-background);
+    display: block;
+    width: 100%;
+    height: auto;
 }
 
 .chart-placeholder {
@@ -724,34 +727,53 @@ body {
     line-height: 1.4;
     max-width: 250px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+}
+
+.block-label {
+    font-family: var(--vscode-font-family);
+    font-size: 11px;
+    fill: var(--vscode-foreground);
+    pointer-events: none;
+    user-select: none;
 }
 
 /* Axis styling */
 .x-axis .domain,
 .y-axis .domain {
     stroke: var(--vscode-panel-border);
+    stroke-width: 1px;
 }
 
 .x-axis .tick line,
 .y-axis .tick line {
     stroke: var(--vscode-panel-border);
+    stroke-width: 1px;
 }
 
 .x-axis .tick text,
 .y-axis .tick text {
     fill: var(--vscode-foreground);
     font-family: var(--vscode-font-family);
+    font-size: 11px;
 }
 
 /* Grid lines */
 .grid line {
     stroke: var(--vscode-panel-border);
     stroke-opacity: 0.3;
+    stroke-width: 1px;
     shape-rendering: crispEdges;
 }
 
 .grid .domain {
     stroke: none;
+}
+
+/* Chart container */
+.chart-content {
+    position: relative;
+    overflow: hidden;
 }
 
 .timeline-chart-empty {
