@@ -28,7 +28,7 @@ export class DataTransformationService {
         filteredEntities = this.applyFilters(filteredEntities, filterState);
 
         // Sort entities by start date (latest first as per requirements)
-        filteredEntities.sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
+        filteredEntities.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
 
         return {
             entities: filteredEntities,
@@ -47,8 +47,8 @@ export class DataTransformationService {
         // Apply date range filter
         if (filterState.dateRange) {
             filtered = filtered.filter(entity => {
-                const entityStart = entity.startDate.getTime();
-                const entityEnd = entity.endDate.getTime();
+                const entityStart = new Date(entity.startDate).getTime();
+                const entityEnd = new Date(entity.endDate).getTime();
                 const filterStart = filterState.dateRange!.start.getTime();
                 const filterEnd = filterState.dateRange!.end.getTime();
 
@@ -182,15 +182,18 @@ export class DataTransformationService {
             return null;
         }
 
-        let minDate = entities[0].startDate;
-        let maxDate = entities[0].endDate;
+        let minDate = new Date(entities[0].startDate);
+        let maxDate = new Date(entities[0].endDate);
 
         for (const entity of entities) {
-            if (entity.startDate < minDate) {
-                minDate = entity.startDate;
+            const entityStart = new Date(entity.startDate);
+            const entityEnd = new Date(entity.endDate);
+            
+            if (entityStart < minDate) {
+                minDate = entityStart;
             }
-            if (entity.endDate > maxDate) {
-                maxDate = entity.endDate;
+            if (entityEnd > maxDate) {
+                maxDate = entityEnd;
             }
         }
 
@@ -231,7 +234,7 @@ export class DataTransformationService {
                 _yValue: entity.yValue,
                 _sourceArray: entity.sourceArray,
                 _sourceFile: entity.sourceFile,
-                _duration: entity.endDate.getTime() - entity.startDate.getTime()
+                _duration: new Date(entity.endDate).getTime() - new Date(entity.startDate).getTime()
             };
         });
     }
@@ -304,15 +307,15 @@ export class DataTransformationService {
                 errors.push('Missing ID');
             }
 
-            if (!entity.startDate || !(entity.startDate instanceof Date) || isNaN(entity.startDate.getTime())) {
+            if (!entity.startDate || isNaN(new Date(entity.startDate).getTime())) {
                 errors.push('Invalid start date');
             }
 
-            if (!entity.endDate || !(entity.endDate instanceof Date) || isNaN(entity.endDate.getTime())) {
+            if (!entity.endDate || isNaN(new Date(entity.endDate).getTime())) {
                 errors.push('Invalid end date');
             }
 
-            if (entity.startDate && entity.endDate && entity.startDate >= entity.endDate) {
+            if (entity.startDate && entity.endDate && new Date(entity.startDate) >= new Date(entity.endDate)) {
                 errors.push('Start date must be before end date');
             }
 

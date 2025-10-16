@@ -333,8 +333,8 @@ export class JsonParserService {
 
         return {
             id,
-            startDate,
-            endDate,
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
             yValue,
             sourceArray: config.name,
             sourceFile: fileName,

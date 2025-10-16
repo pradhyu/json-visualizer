@@ -1,193 +1,179 @@
-# JSON Timeline Visualizer - Pattern Examples
+# JSON Timeline Visualizer - Auto-Detection Patterns
 
-## 🎯 Core Pattern: Array Key = Object Type
+## 🎯 Overview
 
-The JSON Timeline Visualizer follows a simple, intuitive pattern:
+The JSON Timeline Visualizer now automatically detects timeline data in your JSON files! You only need **startDate** and **endDate** fields - everything else is optional and auto-detected.
 
-**The array key in your JSON becomes the object type in the visualizer.**
+## 📋 Required Fields
 
-## ✅ Correct Pattern Examples
+### Start Date Fields (Auto-detected)
+The extension looks for these field names:
+- `startDate`, `start`, `startTime`, `startDateTime`
+- `begin`, `beginDate`, `from`, `fromDate`
+- `createdAt`, `created`, `deployedAt`, `targetDate`
 
-### Example 1: Simple Event Timeline
+### End Date Fields (Auto-detected)
+The extension looks for these field names:
+- `endDate`, `end`, `endTime`, `endDateTime`
+- `finish`, `finishDate`, `to`, `toDate`
+- `completedAt`, `completed`, `actualDate`, `dueDate`
+
+**Note**: If no end date is found, the start date is used (for point-in-time events).
+
+## 🔍 Optional Fields (Auto-detected)
+
+### ID Fields
+- `id`, `ID`, `_id`, `uuid`, `key`, `name`, `title`
+- `taskId`, `eventId`, `projectId`, `phaseId`, `sprintId`
+- `milestoneId`, `version`, `deploymentId`
+
+### Y-Axis Grouping Fields
+- `priority`, `level`, `status`, `type`, `category`
+- `environment`, `team`, `assignee`, `budget`, `cost`
+- `importance`, `criticality`, `severity`, `velocity`
+
+## 📊 JSON Examples
+
+### 1. Simple Events
 ```json
 {
   "events": [
     {
-      "id": "meeting-001",
-      "name": "Team Standup",
+      "id": "meeting-1",
+      "name": "Team Meeting",
       "startDate": "2024-01-15T09:00:00Z",
-      "endDate": "2024-01-15T09:30:00Z",
+      "endDate": "2024-01-15T10:00:00Z",
       "priority": 3
     }
   ]
 }
 ```
-**Result**: Objects are displayed as type "events" 🎉
 
-### Example 2: Project Management
+### 2. Flexible Field Names
 ```json
 {
   "tasks": [
     {
       "taskId": "TASK-001",
-      "title": "Setup Database",
-      "startTime": "2024-01-16T09:00:00Z",
-      "endTime": "2024-01-18T17:00:00Z",
-      "priority": 1
-    }
-  ],
-  "deployments": [
-    {
-      "version": "v1.0.0",
-      "deployedAt": "2024-02-10T10:00:00Z",
-      "completedAt": "2024-02-10T10:30:00Z",
-      "environment": "production"
+      "title": "Fix bug",
+      "begin": "2024-01-20T09:00:00Z",
+      "finish": "2024-01-22T17:00:00Z",
+      "assignee": "John Doe"
     }
   ]
 }
 ```
-**Result**: 
-- Objects from `tasks` array → type "tasks" 🎉
-- Objects from `deployments` array → type "deployments" 🎉
 
-### Example 3: Multiple Project Phases
+### 3. Point-in-Time Events (No End Date)
 ```json
 {
-  "phases": [
-    {
-      "phaseId": "DESIGN",
-      "name": "UI/UX Design Phase",
-      "startDate": "2024-01-01T00:00:00Z",
-      "endDate": "2024-03-31T23:59:59Z",
-      "budget": 150000
-    }
-  ],
   "milestones": [
     {
-      "milestoneId": "M1",
-      "title": "Design Complete",
-      "targetDate": "2024-03-31T17:00:00Z",
-      "actualDate": "2024-04-02T16:30:00Z",
+      "name": "Release v1.0",
+      "targetDate": "2024-03-15T17:00:00Z",
       "criticality": 5
     }
   ]
 }
 ```
-**Result**:
-- Objects from `phases` array → type "phases" 🎉
-- Objects from `milestones` array → type "milestones" 🎉
 
-## 🔧 Configuration Matching
-
-Your `timeline-config.json` should match the array keys:
-
+### 4. Nested Arrays
 ```json
 {
-  "configurations": [
-    {
-      "name": "events",           // ← Matches JSON key "events"
-      "arrayPath": "events",      // ← Points to the array
-      "startDatePath": "startDate",
-      "endDatePath": "endDate",
-      "yAxisPath": "priority",
-      "idPath": "id",
-      "color": "#1f77b4",
-      "enabled": true
-    },
-    {
-      "name": "tasks",            // ← Matches JSON key "tasks"
-      "arrayPath": "tasks",       // ← Points to the array
-      "startDatePath": "startTime",
-      "endDatePath": "endTime",
-      "yAxisPath": "priority",
-      "idPath": "taskId",
-      "color": "#2ca02c",
-      "enabled": true
-    }
-  ]
-}
-```
-
-## 🎨 Visual Result
-
-When you load the JSON, you'll see:
-- **Timeline Chart**: Different colored blocks for each object type
-- **Data Table**: `_sourceArray` column shows the object type
-- **Filters**: You can filter by object type using the `_sourceArray` column
-- **Legend**: Each type gets its own color and label
-
-## 📋 Best Practices
-
-1. **Use Descriptive Array Names**: `events`, `tasks`, `deployments`, `milestones`
-2. **Keep Names Consistent**: If you use `events` in one file, use `events` in all files
-3. **Avoid Nested Arrays**: Put arrays at the top level when possible
-4. **Match Configuration Names**: Ensure config `name` matches JSON array key
-
-## 🚫 What to Avoid
-
-### ❌ Nested Arrays (Harder to Configure)
-```json
-{
-  "data": {
-    "timeline": {
-      "events": [...]  // Requires arrayPath: "data.timeline.events"
+  "project": {
+    "data": {
+      "sprints": [
+        {
+          "sprintId": "SPRINT-001",
+          "start": "2024-01-01T00:00:00Z",
+          "end": "2024-01-15T23:59:59Z",
+          "velocity": 32
+        }
+      ]
     }
   }
 }
 ```
 
-### ❌ Generic Array Names
+### 5. Mixed Field Types
 ```json
 {
-  "items": [...],     // Not descriptive
-  "data": [...],      // Too generic
-  "list": [...]       // Unclear purpose
-}
-```
-
-### ❌ Mismatched Configuration
-```json
-// JSON has "events" but config name is "meetings"
-{
-  "name": "meetings",      // ❌ Doesn't match
-  "arrayPath": "events"    // ❌ Confusing
-}
-```
-
-## ✅ Perfect Example
-
-```json
-{
-  "events": [
-    {
-      "id": "event-001",
-      "name": "Project Kickoff",
-      "startDate": "2024-01-15T09:00:00Z",
-      "endDate": "2024-01-15T11:00:00Z",
-      "priority": 5,
-      "type": "meeting"
-    }
-  ],
-  "tasks": [
-    {
-      "taskId": "TASK-001",
-      "title": "Setup Environment",
-      "startTime": "2024-01-16T09:00:00Z",
-      "endTime": "2024-01-18T17:00:00Z",
-      "priority": 1,
-      "assignee": "John Doe"
-    }
-  ],
   "deployments": [
     {
       "version": "v1.0.0",
-      "deployedAt": "2024-02-10T10:00:00Z",
-      "completedAt": "2024-02-10T10:30:00Z",
+      "deployedAt": "2024-02-15T12:00:00Z",
+      "completedAt": "2024-02-15T12:45:00Z",
       "environment": "production",
       "status": "success"
+    }
+  ],
+  "meetings": [
+    {
+      "subject": "Daily Standup",
+      "startDate": "2024-01-16T09:00:00Z",
+      "endDate": "2024-01-16T09:30:00Z",
+      "attendees": 8
     }
   ]
 }
 ```
 
-**This creates three distinct object types that are easy to identify, filter, and visualize!** 🎉
+## 🎨 Array Type Detection
+
+The extension automatically detects the type of timeline data based on the **array key name**:
+
+| Array Key | Detected Type | Color |
+|-----------|---------------|-------|
+| `events` | Events | Blue |
+| `tasks` | Tasks | Green |
+| `deployments` | Deployments | Red |
+| `milestones` | Milestones | Pink |
+| `sprints` | Sprints | Orange |
+| `phases` | Phases | Brown |
+| `projects` | Projects | Purple |
+| `meetings` | Meetings | Gray |
+| `releases` | Releases | Cyan |
+| *any other* | Custom | Auto-assigned |
+
+## ✅ What Works Automatically
+
+1. **Any array name**: `events`, `tasks`, `custom_timeline`, etc.
+2. **Flexible date formats**: ISO 8601, date strings, timestamps
+3. **Optional fields**: Missing ID, Y-axis, or other fields won't cause errors
+4. **Nested structures**: Arrays anywhere in your JSON hierarchy
+5. **Mixed naming**: Different field names in the same file
+6. **Point-in-time events**: Events with only start dates
+
+## 🚫 What Doesn't Work
+
+1. **No date fields**: Arrays without any recognizable date fields
+2. **Invalid dates**: Fields that can't be parsed as dates
+3. **Empty arrays**: Arrays with no items
+4. **Non-object items**: Array items that aren't objects
+
+## 🔧 Manual Configuration (Optional)
+
+If auto-detection doesn't work perfectly, you can still create manual configurations:
+
+1. **Command Palette**: "Edit Timeline Configuration"
+2. **Configuration Panel**: Click "📝 Edit JSON Config"
+3. **Manual file**: Create `timeline-config.json` in workspace
+
+## 🎯 Best Practices
+
+1. **Use standard field names** when possible (`startDate`, `endDate`, `id`)
+2. **Include meaningful IDs** for better identification
+3. **Add grouping fields** (`priority`, `team`, `status`) for better visualization
+4. **Use ISO date format** for consistency
+5. **Test with small files** first to verify detection
+
+## 🧪 Testing Auto-Detection
+
+Use the `comprehensive-example.json` file in the sample project to see all patterns in action:
+- Multiple array types
+- Different field naming conventions
+- Nested structures
+- Optional fields
+- Point-in-time events
+
+The extension will automatically detect and visualize all timeline data without any configuration!

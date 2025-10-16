@@ -13,9 +13,9 @@ export interface ArrayConfig {
 
 export interface TimelineEntity {
   id: string;
-  startDate: Date;
-  endDate: Date;
-  yValue?: number;
+  startDate: string;
+  endDate: string;
+  yValue?: any;
   sourceArray: string;
   sourceFile: string;
   originalData: any;
