@@ -376,9 +376,16 @@ export class ConfigurationManager {
     }
 
     /**
-     * Load configurations from VSCode settings
+     * Load configurations from JSON file or VSCode settings
      */
     private loadConfigurations(): ArrayConfig[] {
+        // Try to load from workspace JSON file first
+        const workspaceConfigs = this.loadFromJsonFile();
+        if (workspaceConfigs.length > 0) {
+            return workspaceConfigs;
+        }
+
+        // Fall back to VSCode settings
         const config = vscode.workspace.getConfiguration(ConfigurationManager.EXTENSION_ID);
         const stored = config.get<ArrayConfig[]>(ConfigurationManager.CONFIG_KEY, []);
         
@@ -388,6 +395,28 @@ export class ConfigurationManager {
         }
         
         return stored;
+    }
+
+    /**
+     * Load configurations from timeline-config.json file in workspace
+     */
+    private loadFromJsonFile(): ArrayConfig[] {
+        try {
+            const workspaceFolders = vscode.workspace.workspaceFolders;
+            if (!workspaceFolders || workspaceFolders.length === 0) {
+                return [];
+            }
+
+            const configPath = vscode.Uri.joinPath(workspaceFolders[0].uri, 'timeline-config.json');
+            const configContent = vscode.workspace.fs.readFile(configPath);
+            
+            return configContent.then(content => {
+                const configData = JSON.parse(content.toString());
+                return configData.configurations || [];
+            }).catch(() => []);
+        } catch (error) {
+            return [];
+        }
     }
 
     /**
