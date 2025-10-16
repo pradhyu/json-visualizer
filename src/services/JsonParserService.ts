@@ -8,19 +8,35 @@ export class JsonParserService {
         const fileName = this.getFileNameFromPath(filePath);
         const entities: TimelineEntity[] = [];
 
+        console.log('JsonParserService.parseFile called with:', {
+            filePath,
+            fileName,
+            configCount: configs.length,
+            enabledConfigs: configs.filter(c => c.enabled).length,
+            contentKeys: Object.keys(content || {})
+        });
+
         // First try auto-detection if no configs are enabled or available
         const enabledConfigs = configs.filter(c => c.enabled);
         if (enabledConfigs.length === 0) {
+            console.log('No enabled configs found, using auto-detection');
             const autoDetectedEntities = this.autoDetectTimelineArrays(content, filePath, fileName);
             entities.push(...autoDetectedEntities);
+            console.log('Auto-detected entities:', autoDetectedEntities.length);
         } else {
+            console.log('Using enabled configurations:', enabledConfigs.map(c => c.name));
             // Use provided configurations
             for (const config of enabledConfigs) {
                 try {
+                    console.log(`Processing config ${config.name} with arrayPath: ${config.arrayPath}`);
                     const arrayData = this.resolveFluentPath(content, config.arrayPath);
                     if (Array.isArray(arrayData)) {
+                        console.log(`Found array for ${config.name} with ${arrayData.length} items`);
                         const configEntities = this.extractArrayData(arrayData, config, filePath, fileName);
                         entities.push(...configEntities);
+                        console.log(`Extracted ${configEntities.length} entities from ${config.name}`);
+                    } else {
+                        console.log(`No array found for ${config.name} at path ${config.arrayPath}`);
                     }
                 } catch (error) {
                     console.warn(`Failed to extract data for config ${config.name}:`, error);

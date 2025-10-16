@@ -429,14 +429,21 @@ export class ConfigurationManager {
         try {
             const workspaceFolders = vscode.workspace.workspaceFolders;
             if (!workspaceFolders || workspaceFolders.length === 0) {
+                console.log('No workspace folders found for config loading');
                 return [];
             }
 
             const configPath = vscode.Uri.joinPath(workspaceFolders[0].uri, 'timeline-config.json');
+            console.log('Attempting to load config from:', configPath.fsPath);
+            
             const configContent = await vscode.workspace.fs.readFile(configPath);
             const configData = JSON.parse(configContent.toString());
-            return configData.configurations || [];
+            const configurations = configData.configurations || [];
+            
+            console.log('Successfully loaded configurations:', configurations.map((c: any) => c.name));
+            return configurations;
         } catch (error) {
+            console.log('Failed to load config from JSON file:', error);
             return [];
         }
     }
