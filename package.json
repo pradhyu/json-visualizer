@@ -43,7 +43,8 @@
   "activationEvents": [
     "onLanguage:json",
     "onCommand:jsonTimelineVisualizer.openVisualizer",
-    "onCommand:jsonTimelineVisualizer.openDirectory"
+    "onCommand:jsonTimelineVisualizer.openDirectory",
+    "onCommand:jsonTimelineVisualizer.openConfig"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -82,6 +83,12 @@
           "command": "jsonTimelineVisualizer.openVisualizer",
           "when": "resourceExtname == .json",
           "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "jsonTimelineVisualizer.openConfig",
+          "when": "workspaceFolderCount > 0"
         }
       ]
     },
