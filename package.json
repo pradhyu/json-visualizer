@@ -57,6 +57,11 @@
         "command": "jsonTimelineVisualizer.openDirectory",
         "title": "Open Directory in Timeline Visualizer",
         "category": "JSON Timeline"
+      },
+      {
+        "command": "jsonTimelineVisualizer.openConfig",
+        "title": "Edit Timeline Configuration",
+        "category": "JSON Timeline"
       }
     ],
     "menus": {
