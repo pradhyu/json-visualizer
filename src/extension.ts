@@ -22,6 +22,13 @@ export function activate(context: vscode.ExtensionContext) {
         }
     );
 
+    const openConfigCommand = vscode.commands.registerCommand(
+        'jsonTimelineVisualizer.openConfig',
+        () => {
+            provider.openConfigFile();
+        }
+    );
+
     // Register webview panel serializer for persistence
     const webviewPanelSerializer = vscode.window.registerWebviewPanelSerializer(
         TimelineVisualizerProvider.viewType,
@@ -32,6 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
         openVisualizerCommand,
         openDirectoryCommand,
+        openConfigCommand,
         webviewPanelSerializer
     );
 }

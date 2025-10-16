@@ -32,6 +32,11 @@ export class TimelineVisualizerProvider implements vscode.WebviewPanelSerializer
                 arrayTypes: []
             }
         };
+        
+        // Initialize configurations from JSON file
+        this._configManager.initializeFromJsonFile().then(() => {
+            this._currentData.configurations = this._configManager.getArrayConfigs();
+        });
     }
 
     public async deserializeWebviewPanel(
@@ -95,6 +100,10 @@ export class TimelineVisualizerProvider implements vscode.WebviewPanelSerializer
                 data: { directoryPath: uri.fsPath }
             });
         }
+    }
+
+    public async openConfigFile(): Promise<void> {
+        await this._configManager.openConfigFile();
     }
 
     private _setupWebview(webview: vscode.Webview): void {
