@@ -1,0 +1,64 @@
+{
+  "project": {
+    "name": "E-commerce Platform",
+    "data": {
+      "timeline": {
+        "milestones": [
+          {
+            "taskId": "MILESTONE-001",
+            "title": "MVP Release",
+            "start": "2024-01-01",
+            "end": "2024-03-31",
+            "level": 5,
+            "team": "Full Stack",
+            "budget": 150000
+          },
+          {
+            "taskId": "MILESTONE-002", 
+            "title": "Beta Testing",
+            "start": "2024-04-01",
+            "end": "2024-05-15",
+            "level": 3,
+            "team": "QA",
+            "budget": 75000
+          },
+          {
+            "taskId": "MILESTONE-003",
+            "title": "Production Launch",
+            "start": "2024-05-16", 
+            "end": "2024-06-30",
+            "level": 5,
+            "team": "DevOps",
+            "budget": 100000
+          }
+        ],
+        "phases": [
+          {
+            "phaseId": "PHASE-A",
+            "name": "Planning & Design",
+            "startTime": "2024-01-01T00:00:00Z",
+            "endTime": "2024-01-31T23:59:59Z",
+            "complexity": 2,
+            "resources": 8
+          },
+          {
+            "phaseId": "PHASE-B", 
+            "name": "Development",
+            "startTime": "2024-02-01T00:00:00Z",
+            "endTime": "2024-04-30T23:59:59Z",
+            "complexity": 4,
+            "resources": 12
+          },
+          {
+            "phaseId": "PHASE-C",
+            "name": "Testing & Deployment", 
+            "startTime": "2024-05-01T00:00:00Z",
+            "endTime": "2024-06-30T23:59:59Z",
+            "complexity": 3,
+            "resources": 6
+          }
+        ]
+      }
+    }
+  }
+}

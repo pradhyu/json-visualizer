@@ -1,0 +1,100 @@
+{
+  "validEvents": [
+    {
+      "id": "valid-1",
+      "name": "Normal Event",
+      "startDate": "2024-01-15T09:00:00Z",
+      "endDate": "2024-01-15T17:00:00Z",
+      "priority": 1
+    }
+  ],
+  "emptyArray": [],
+  "eventsWithMissingDates": [
+    {
+      "id": "missing-start",
+      "name": "Event Missing Start Date",
+      "endDate": "2024-01-20T17:00:00Z",
+      "priority": 2
+    },
+    {
+      "id": "missing-end",
+      "name": "Event Missing End Date", 
+      "startDate": "2024-01-22T09:00:00Z",
+      "priority": 1
+    },
+    {
+      "id": "missing-both",
+      "name": "Event Missing Both Dates",
+      "priority": 3
+    }
+  ],
+  "eventsWithMalformedDates": [
+    {
+      "id": "malformed-1",
+      "name": "Invalid Date Format",
+      "startDate": "not-a-date",
+      "endDate": "2024-13-45T25:70:00Z",
+      "priority": 1
+    },
+    {
+      "id": "malformed-2", 
+      "name": "Null Dates",
+      "startDate": null,
+      "endDate": null,
+      "priority": 2
+    },
+    {
+      "id": "malformed-3",
+      "name": "Empty String Dates",
+      "startDate": "",
+      "endDate": "",
+      "priority": 1
+    }
+  ],
+  "eventsWithInvalidDateRanges": [
+    {
+      "id": "invalid-range-1",
+      "name": "End Before Start",
+      "startDate": "2024-01-20T17:00:00Z",
+      "endDate": "2024-01-15T09:00:00Z",
+      "priority": 1
+    },
+    {
+      "id": "invalid-range-2",
+      "name": "Same Start and End",
+      "startDate": "2024-01-15T12:00:00Z", 
+      "endDate": "2024-01-15T12:00:00Z",
+      "priority": 2
+    }
+  ],
+  "eventsWithDifferentDateFormats": [
+    {
+      "id": "format-iso",
+      "name": "ISO Format",
+      "startDate": "2024-01-15T09:00:00Z",
+      "endDate": "2024-01-15T17:00:00Z",
+      "priority": 1
+    },
+    {
+      "id": "format-timestamp",
+      "name": "Timestamp Format",
+      "startDate": 1705312800000,
+      "endDate": 1705341600000,
+      "priority": 2
+    },
+    {
+      "id": "format-date-only",
+      "name": "Date Only Format",
+      "startDate": "2024-01-15",
+      "endDate": "2024-01-16", 
+      "priority": 1
+    },
+    {
+      "id": "format-us",
+      "name": "US Date Format",
+      "startDate": "01/15/2024",
+      "endDate": "01/16/2024",
+      "priority": 3
+    }
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "name": "json-timeline-visualizer",
+  "displayName": "JSON Timeline Visualizer",
+  "description": "Transform JSON array data into interactive timeline visualizations with comprehensive editing capabilities",
+  "version": "1.0.0",
+  "publisher": "json-timeline-visualizer",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/json-timeline-visualizer/vscode-extension.git"
+  },
+  "bugs": {
+    "url": "https://github.com/json-timeline-visualizer/vscode-extension/issues"
+  },
+  "homepage": "https://github.com/json-timeline-visualizer/vscode-extension#readme",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Visualization",
+    "Data Science",
+    "Other"
+  ],
+  "keywords": [
+    "json",
+    "timeline",
+    "visualization",
+    "chart",
+    "data",
+    "d3",
+    "gantt",
+    "project-management",
+    "devops",
+    "analytics",
+    "temporal-data",
+    "interactive"
+  ],
+  "icon": "resources/icon.png",
+  "galleryBanner": {
+    "color": "#1f77b4",
+    "theme": "dark"
+  },
+  "activationEvents": [
+    "onLanguage:json",
+    "onCommand:jsonTimelineVisualizer.openVisualizer",
+    "onCommand:jsonTimelineVisualizer.openDirectory"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "jsonTimelineVisualizer.openVisualizer",
+        "title": "Open JSON Timeline Visualizer",
+        "category": "JSON Timeline"
+      },
+      {
+        "command": "jsonTimelineVisualizer.openDirectory",
+        "title": "Open Directory in Timeline Visualizer",
+        "category": "JSON Timeline"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "jsonTimelineVisualizer.openVisualizer",
+          "when": "resourceExtname == .json",
+          "group": "navigation"
+        },
+        {
+          "command": "jsonTimelineVisualizer.openDirectory",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "jsonTimelineVisualizer.openVisualizer",
+          "when": "resourceExtname == .json",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "JSON Timeline Visualizer",
+      "properties": {
+        "jsonTimelineVisualizer.defaultConfigurations": {
+          "type": "array",
+          "default": [],
+          "description": "Default array configurations for common JSON structures"
+        },
+        "jsonTimelineVisualizer.chartSettings": {
+          "type": "object",
+          "default": {
+            "defaultHeight": 400,
+            "colorPalette": [
+              "#1f77b4",
+              "#ff7f0e",
+              "#2ca02c",
+              "#d62728",
+              "#9467bd",
+              "#8c564b",
+              "#e377c2",
+              "#7f7f7f",
+              "#bcbd22",
+              "#17becf"
+            ],
+            "animationDuration": 300
+          },
+          "description": "Chart visualization settings"
+        },
+        "jsonTimelineVisualizer.tableSettings": {
+          "type": "object",
+          "default": {
+            "pageSize": 100,
+            "enableEditing": true,
+            "autoSave": false
+          },
+          "description": "Table view settings"
+        },
+        "jsonTimelineVisualizer.fileSettings": {
+          "type": "object",
+          "default": {
+            "watchForChanges": true,
+            "maxFileSize": 10485760,
+            "supportedExtensions": [
+              ".json"
+            ]
+          },
+          "description": "File handling settings"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "webpack --mode production",
+    "watch": "webpack --mode development --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/d3": "^6.7.8",
+    "@types/node": "16.x",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "css-loader": "^7.1.2",
+    "eslint": "^8.28.0",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.9.4",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "d3": "^7.9.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

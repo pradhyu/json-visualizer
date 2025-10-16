@@ -1,0 +1,11 @@
+{
+  "milestones": [
+    {
+      "milestoneId": "file3-m1",
+      "title": "File 3 Milestone 1",
+      "start": "2024-01-05T00:00:00Z",
+      "end": "2024-01-05T23:59:59Z",
+      "importance": 5
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "organization": {
+    "name": "TechCorp Inc",
+    "departments": {
+      "engineering": {
+        "projects": {
+          "active": [
+            {
+              "projectCode": "ENG-001",
+              "title": "Mobile App Redesign",
+              "timeline": {
+                "start": "2024-01-01T00:00:00Z",
+                "end": "2024-06-30T23:59:59Z"
+              },
+              "metrics": {
+                "complexity": 4,
+                "teamSize": 8
+              }
+            },
+            {
+              "projectCode": "ENG-002",
+              "title": "API Gateway Migration", 
+              "timeline": {
+                "start": "2024-02-15T00:00:00Z",
+                "end": "2024-08-15T23:59:59Z"
+              },
+              "metrics": {
+                "complexity": 5,
+                "teamSize": 12
+              }
+            }
+          ]
+        },
+        "infrastructure": {
+          "maintenanceWindows": [
+            {
+              "windowId": "MAINT-ENG-001",
+              "description": "Database Cluster Upgrade",
+              "schedule": {
+                "startTime": "2024-01-20T02:00:00Z",
+                "endTime": "2024-01-20T06:00:00Z"
+              },
+              "impact": {
+                "level": 3,
+                "affectedSystems": ["database", "api"]
+              }
+            }
+          ]
+        }
+      },
+      "marketing": {
+        "campaigns": {
+          "digital": [
+            {
+              "campaignId": "MKT-DIG-001",
+              "name": "Q1 Product Launch",
+              "duration": {
+                "launchDate": "2024-01-15T00:00:00Z",
+                "endDate": "2024-03-31T23:59:59Z"
+              },
+              "budget": {
+                "allocated": 50000,
+                "spent": 35000
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

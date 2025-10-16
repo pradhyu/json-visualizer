@@ -1,0 +1,125 @@
+{
+  "project": {
+    "name": "Mobile Banking App",
+    "startDate": "2024-01-01",
+    "endDate": "2024-12-31"
+  },
+  "phases": [
+    {
+      "phaseId": "DISCOVERY",
+      "name": "Discovery & Research",
+      "startDate": "2024-01-01T00:00:00Z",
+      "endDate": "2024-02-15T23:59:59Z",
+      "budget": 125000,
+      "teamSize": 6,
+      "status": "completed"
+    },
+    {
+      "phaseId": "DESIGN",
+      "name": "UX/UI Design",
+      "startDate": "2024-02-01T00:00:00Z", 
+      "endDate": "2024-04-30T23:59:59Z",
+      "budget": 200000,
+      "teamSize": 8,
+      "status": "completed"
+    },
+    {
+      "phaseId": "DEVELOPMENT",
+      "name": "Core Development",
+      "startDate": "2024-03-15T00:00:00Z",
+      "endDate": "2024-09-30T23:59:59Z",
+      "budget": 800000,
+      "teamSize": 15,
+      "status": "in-progress"
+    },
+    {
+      "phaseId": "TESTING",
+      "name": "QA & Testing",
+      "startDate": "2024-08-01T00:00:00Z",
+      "endDate": "2024-11-15T23:59:59Z", 
+      "budget": 150000,
+      "teamSize": 5,
+      "status": "planned"
+    },
+    {
+      "phaseId": "DEPLOYMENT",
+      "name": "Production Deployment",
+      "startDate": "2024-11-01T00:00:00Z",
+      "endDate": "2024-12-31T23:59:59Z",
+      "budget": 100000,
+      "teamSize": 4,
+      "status": "planned"
+    }
+  ],
+  "milestones": [
+    {
+      "milestoneId": "M1",
+      "title": "Requirements Finalized",
+      "targetDate": "2024-02-15T17:00:00Z",
+      "actualDate": "2024-02-14T16:30:00Z",
+      "criticality": 5,
+      "dependencies": ["DISCOVERY"]
+    },
+    {
+      "milestoneId": "M2",
+      "title": "Design System Complete",
+      "targetDate": "2024-04-30T17:00:00Z",
+      "actualDate": "2024-05-02T14:20:00Z",
+      "criticality": 4,
+      "dependencies": ["DESIGN"]
+    },
+    {
+      "milestoneId": "M3", 
+      "title": "MVP Ready",
+      "targetDate": "2024-07-31T17:00:00Z",
+      "actualDate": null,
+      "criticality": 5,
+      "dependencies": ["DEVELOPMENT"]
+    },
+    {
+      "milestoneId": "M4",
+      "title": "Beta Testing Complete",
+      "targetDate": "2024-10-15T17:00:00Z",
+      "actualDate": null,
+      "criticality": 3,
+      "dependencies": ["TESTING"]
+    },
+    {
+      "milestoneId": "M5",
+      "title": "Production Launch",
+      "targetDate": "2024-12-15T17:00:00Z",
+      "actualDate": null,
+      "criticality": 5,
+      "dependencies": ["DEPLOYMENT"]
+    }
+  ],
+  "sprints": [
+    {
+      "sprintId": "SPRINT-001",
+      "name": "Authentication Foundation",
+      "startDate": "2024-03-15T00:00:00Z",
+      "endDate": "2024-03-29T23:59:59Z",
+      "velocity": 32,
+      "capacity": 120,
+      "team": "Backend"
+    },
+    {
+      "sprintId": "SPRINT-002",
+      "name": "User Onboarding Flow",
+      "startDate": "2024-04-01T00:00:00Z",
+      "endDate": "2024-04-15T23:59:59Z",
+      "velocity": 28,
+      "capacity": 120,
+      "team": "Frontend"
+    },
+    {
+      "sprintId": "SPRINT-003",
+      "name": "Account Management",
+      "startDate": "2024-04-16T00:00:00Z",
+      "endDate": "2024-04-30T23:59:59Z",
+      "velocity": 35,
+      "capacity": 140,
+      "team": "Full Stack"
+    }
+  ]
+}

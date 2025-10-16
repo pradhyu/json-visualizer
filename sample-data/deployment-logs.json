@@ -1,0 +1,62 @@
+{
+  "deployments": [
+    {
+      "deploymentId": "DEPLOY-001",
+      "service": "user-service",
+      "version": "v2.1.0",
+      "environment": "staging",
+      "startTime": "2024-01-15T10:00:00Z",
+      "endTime": "2024-01-15T10:15:00Z",
+      "status": "success",
+      "duration": 15,
+      "deployedBy": "jenkins-bot"
+    },
+    {
+      "deploymentId": "DEPLOY-002", 
+      "service": "payment-service",
+      "version": "v1.5.2",
+      "environment": "production",
+      "startTime": "2024-01-16T14:30:00Z",
+      "endTime": "2024-01-16T14:45:00Z",
+      "status": "success",
+      "duration": 15,
+      "deployedBy": "alice.smith"
+    },
+    {
+      "deploymentId": "DEPLOY-003",
+      "service": "notification-service", 
+      "version": "v3.0.0",
+      "environment": "staging",
+      "startTime": "2024-01-17T09:20:00Z",
+      "endTime": "2024-01-17T09:50:00Z",
+      "status": "failed",
+      "duration": 30,
+      "deployedBy": "bob.johnson"
+    },
+    {
+      "deploymentId": "DEPLOY-004",
+      "service": "api-gateway",
+      "version": "v4.2.1",
+      "environment": "production",
+      "startTime": "2024-01-18T16:00:00Z",
+      "endTime": "2024-01-18T16:12:00Z",
+      "status": "success", 
+      "duration": 12,
+      "deployedBy": "charlie.wilson"
+    }
+  ],
+  "rollbacks": [
+    {
+      "rollbackId": "ROLLBACK-001",
+      "originalDeployment": "DEPLOY-003",
+      "service": "notification-service",
+      "fromVersion": "v3.0.0",
+      "toVersion": "v2.8.1",
+      "startTime": "2024-01-17T10:00:00Z",
+      "endTime": "2024-01-17T10:08:00Z",
+      "reason": "Critical bug in message routing",
+      "severity": 1,
+      "triggeredBy": "bob.johnson"
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "resources": [
+    {
+      "resourceId": "DEV-001",
+      "name": "Senior Developer - Alice",
+      "allocation": "Project Alpha",
+      "startDate": "2024-01-01T00:00:00Z",
+      "endDate": "2024-03-31T23:59:59Z",
+      "utilization": 100,
+      "skillLevel": 5,
+      "hourlyRate": 85
+    },
+    {
+      "resourceId": "DEV-002",
+      "name": "Frontend Developer - Bob", 
+      "allocation": "Project Beta",
+      "startDate": "2024-01-15T00:00:00Z",
+      "endDate": "2024-04-15T23:59:59Z",
+      "utilization": 80,
+      "skillLevel": 3,
+      "hourlyRate": 65
+    },
+    {
+      "resourceId": "QA-001",
+      "name": "QA Engineer - Carol",
+      "allocation": "Project Alpha",
+      "startDate": "2024-02-01T00:00:00Z",
+      "endDate": "2024-05-31T23:59:59Z",
+      "utilization": 75,
+      "skillLevel": 4,
+      "hourlyRate": 70
+    },
+    {
+      "resourceId": "PM-001",
+      "name": "Project Manager - David",
+      "allocation": "Multiple Projects",
+      "startDate": "2024-01-01T00:00:00Z", 
+      "endDate": "2024-12-31T23:59:59Z",
+      "utilization": 90,
+      "skillLevel": 5,
+      "hourlyRate": 95
+    }
+  ],
+  "equipment": [
+    {
+      "equipmentId": "SERVER-001",
+      "type": "Development Server",
+      "reservedBy": "Project Alpha Team",
+      "startTime": "2024-01-01T00:00:00Z",
+      "endTime": "2024-06-30T23:59:59Z",
+      "cost": 500,
+      "location": "Data Center A"
+    },
+    {
+      "equipmentId": "LICENSE-001",
+      "type": "Software License - IDE Pro",
+      "reservedBy": "Development Team",
+      "startTime": "2024-01-01T00:00:00Z",
+      "endTime": "2024-12-31T23:59:59Z",
+      "cost": 200,
+      "location": "Virtual"
+    }
+  ],
+  "meetings": [
+    {
+      "meetingId": "MEET-001",
+      "title": "Sprint Planning",
+      "startTime": "2024-01-15T10:00:00Z",
+      "endTime": "2024-01-15T12:00:00Z",
+      "attendees": 8,
+      "room": "Conference Room A",
+      "recurring": true
+    },
+    {
+      "meetingId": "MEET-002",
+      "title": "Architecture Review",
+      "startTime": "2024-01-20T14:00:00Z",
+      "endTime": "2024-01-20T16:00:00Z", 
+      "attendees": 5,
+      "room": "Conference Room B",
+      "recurring": false
+    }
+  ]
+}

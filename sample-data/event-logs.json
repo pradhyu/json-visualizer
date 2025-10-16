@@ -1,0 +1,69 @@
+{
+  "systemEvents": [
+    {
+      "eventId": "SYS-001",
+      "type": "server_restart",
+      "timestamp": "2024-01-15T03:30:00Z",
+      "endTimestamp": "2024-01-15T03:35:00Z",
+      "severity": 2,
+      "server": "web-01",
+      "impact": "Service temporarily unavailable"
+    },
+    {
+      "eventId": "SYS-002", 
+      "type": "database_backup",
+      "timestamp": "2024-01-16T02:00:00Z",
+      "endTimestamp": "2024-01-16T04:30:00Z",
+      "severity": 1,
+      "server": "db-01",
+      "impact": "Read-only mode during backup"
+    },
+    {
+      "eventId": "SYS-003",
+      "type": "security_scan",
+      "timestamp": "2024-01-17T01:00:00Z",
+      "endTimestamp": "2024-01-17T01:45:00Z",
+      "severity": 1,
+      "server": "security-scanner",
+      "impact": "No impact on services"
+    }
+  ],
+  "userEvents": [
+    {
+      "sessionId": "USER-001",
+      "action": "login_session",
+      "startTime": "2024-01-15T09:15:00Z",
+      "endTime": "2024-01-15T17:30:00Z",
+      "userId": "user123",
+      "duration": 495,
+      "location": "New York"
+    },
+    {
+      "sessionId": "USER-002",
+      "action": "api_usage_burst", 
+      "startTime": "2024-01-16T14:20:00Z",
+      "endTime": "2024-01-16T14:25:00Z",
+      "userId": "api_client_456",
+      "duration": 5,
+      "location": "London"
+    }
+  ],
+  "alerts": [
+    {
+      "alertId": "ALERT-001",
+      "message": "High CPU Usage",
+      "triggeredAt": "2024-01-15T15:30:00Z",
+      "resolvedAt": "2024-01-15T16:15:00Z",
+      "priority": 3,
+      "source": "monitoring-system"
+    },
+    {
+      "alertId": "ALERT-002",
+      "message": "Disk Space Low",
+      "triggeredAt": "2024-01-17T10:00:00Z", 
+      "resolvedAt": "2024-01-17T11:30:00Z",
+      "priority": 2,
+      "source": "storage-monitor"
+    }
+  ]
+}

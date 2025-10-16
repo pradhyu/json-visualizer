@@ -1,0 +1,18 @@
+{
+  "events": [
+    {
+      "id": "file1-event1",
+      "name": "File 1 Event 1",
+      "startDate": "2024-01-01T09:00:00Z",
+      "endDate": "2024-01-01T17:00:00Z",
+      "priority": 1
+    },
+    {
+      "id": "file1-event2", 
+      "name": "File 1 Event 2",
+      "startDate": "2024-01-02T09:00:00Z",
+      "endDate": "2024-01-02T17:00:00Z",
+      "priority": 2
+    }
+  ]
+}

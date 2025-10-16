@@ -1,0 +1,18 @@
+{
+  "tasks": [
+    {
+      "taskId": "file2-task1",
+      "name": "File 2 Task 1", 
+      "startTime": "2024-01-03T08:00:00Z",
+      "endTime": "2024-01-03T16:00:00Z",
+      "complexity": 3
+    },
+    {
+      "taskId": "file2-task2",
+      "name": "File 2 Task 2",
+      "startTime": "2024-01-04T08:00:00Z", 
+      "endTime": "2024-01-04T16:00:00Z",
+      "complexity": 1
+    }
+  ]
+}
