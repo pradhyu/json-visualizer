@@ -1,13 +1,63 @@
 {
   "configurations": [
     {
+      "name": "events",
+      "arrayPath": "events",
+      "startDatePath": "startDate",
+      "endDatePath": "endDate",
+      "yAxisPath": "priority",
+      "idPath": "id",
+      "color": "#1f77b4",
+      "enabled": true
+    },
+    {
+      "name": "timeline",
+      "arrayPath": "timeline",
+      "startDatePath": "start",
+      "endDatePath": "end",
+      "yAxisPath": "level",
+      "idPath": "name",
+      "color": "#ff7f0e",
+      "enabled": true
+    },
+    {
+      "name": "tasks",
+      "arrayPath": "data.tasks",
+      "startDatePath": "startTime",
+      "endDatePath": "endTime",
+      "yAxisPath": "priority",
+      "idPath": "taskId",
+      "color": "#2ca02c",
+      "enabled": true
+    },
+    {
+      "name": "deployments",
+      "arrayPath": "deployments",
+      "startDatePath": "deployedAt",
+      "endDatePath": "completedAt",
+      "yAxisPath": "environment",
+      "idPath": "version",
+      "color": "#d62728",
+      "enabled": true
+    },
+    {
+      "name": "projects",
+      "arrayPath": "projects",
+      "startDatePath": "startDate",
+      "endDatePath": "endDate",
+      "yAxisPath": "budget",
+      "idPath": "projectName",
+      "color": "#9467bd",
+      "enabled": true
+    },
+    {
       "name": "phases",
       "arrayPath": "phases",
       "startDatePath": "startDate",
       "endDatePath": "endDate",
       "yAxisPath": "budget",
       "idPath": "phaseId",
-      "color": "#2ca02c",
+      "color": "#8c564b",
       "enabled": true
     },
     {
@@ -27,56 +77,6 @@
       "endDatePath": "endDate",
       "yAxisPath": "velocity",
       "idPath": "sprintId",
-      "color": "#ff7f0e",
-      "enabled": true
-    },
-    {
-      "name": "deployments",
-      "arrayPath": "deployments",
-      "startDatePath": "deployedAt",
-      "endDatePath": "completedAt",
-      "yAxisPath": "environment",
-      "idPath": "version",
-      "color": "#d62728",
-      "enabled": true
-    },
-    {
-      "name": "events",
-      "arrayPath": "events",
-      "startDatePath": "startDate",
-      "endDatePath": "endDate",
-      "yAxisPath": "priority",
-      "idPath": "id",
-      "color": "#1f77b4",
-      "enabled": true
-    },
-    {
-      "name": "timeline",
-      "arrayPath": "timeline",
-      "startDatePath": "start",
-      "endDatePath": "end",
-      "yAxisPath": "level",
-      "idPath": "name",
-      "color": "#9467bd",
-      "enabled": true
-    },
-    {
-      "name": "tasks",
-      "arrayPath": "tasks",
-      "startDatePath": "startTime",
-      "endDatePath": "endTime",
-      "yAxisPath": "priority",
-      "idPath": "taskId",
-      "color": "#8c564b",
-      "enabled": true
-    },
-    {
-      "name": "projects",
-      "arrayPath": "projects",
-      "startDatePath": "startDate",
-      "endDatePath": "endDate",
-      "yAxisPath": "budget",
-      "idPath": "projectName",
       "color": "#7f7f7f",
       "enabled": true
     }

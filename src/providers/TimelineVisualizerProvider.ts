@@ -32,11 +32,6 @@ export class TimelineVisualizerProvider implements vscode.WebviewPanelSerializer
                 arrayTypes: []
             }
         };
-        
-        // Initialize configurations from JSON file
-        this._configManager.initializeFromJsonFile().then(() => {
-            this._currentData.configurations = this._configManager.getArrayConfigs();
-        });
     }
 
     public async deserializeWebviewPanel(
@@ -319,6 +314,10 @@ export class TimelineVisualizerProvider implements vscode.WebviewPanelSerializer
     private async _sendInitialData(): Promise<void> {
         if (!this._panel) return;
 
+        // Ensure configurations are loaded from JSON file
+        await this._configManager.initializeFromJsonFile();
+        this._currentData.configurations = this._configManager.getArrayConfigs();
+
         this._panel.webview.postMessage({
             type: 'initialData',
             data: {
@@ -335,6 +334,10 @@ export class TimelineVisualizerProvider implements vscode.WebviewPanelSerializer
      * Load a single file
      */
     private async _loadFile(filePath: string): Promise<void> {
+        // Ensure configurations are loaded from JSON file
+        await this._configManager.initializeFromJsonFile();
+        this._currentData.configurations = this._configManager.getArrayConfigs();
+
         // Validate file size first
         const settings = this._configManager.getSettings();
         const isValidSize = await this._fileOps.validateFileSize(filePath, settings.fileSettings.maxFileSize);
@@ -387,6 +390,10 @@ export class TimelineVisualizerProvider implements vscode.WebviewPanelSerializer
      * Load multiple files
      */
     private async _loadMultipleFiles(filePaths: string[]): Promise<void> {
+        // Ensure configurations are loaded from JSON file
+        await this._configManager.initializeFromJsonFile();
+        this._currentData.configurations = this._configManager.getArrayConfigs();
+
         // Validate file sizes first
         const settings = this._configManager.getSettings();
         const validFiles: string[] = [];

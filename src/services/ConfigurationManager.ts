@@ -448,6 +448,9 @@ export class ConfigurationManager {
         const jsonConfigs = await this.loadFromJsonFile();
         if (jsonConfigs.length > 0) {
             this._configurations = jsonConfigs;
+            console.log('Loaded configurations from JSON file:', jsonConfigs.map(c => c.name));
+        } else {
+            console.log('No JSON config file found, using defaults');
         }
     }
 

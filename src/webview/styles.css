@@ -913,13 +913,26 @@ body {
     z-index: 1;
 }
 
+.data-table tr {
+    background-color: var(--vscode-editor-background);
+}
+
+.data-table tr:nth-child(even) {
+    background-color: var(--vscode-list-hoverBackground);
+}
+
+.data-table tr:hover {
+    background-color: var(--vscode-list-activeSelectionBackground);
+}
+
 .data-table td {
     border: 1px solid var(--vscode-panel-border);
     padding: 4px 8px;
+    background-color: inherit;
 }
 
 .data-table td.edited {
-    background-color: var(--vscode-diffEditor-insertedTextBackground);
+    background-color: var(--vscode-diffEditor-insertedTextBackground) !important;
 }
 
 .column-header {

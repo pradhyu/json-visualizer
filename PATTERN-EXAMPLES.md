@@ -1,179 +1,333 @@
-# JSON Timeline Visualizer - Auto-Detection Patterns
+# JSON Pattern Examples
 
-## 🎯 Overview
+This document shows all the different JSON patterns supported by the Timeline Visualizer and their corresponding configurations.
 
-The JSON Timeline Visualizer now automatically detects timeline data in your JSON files! You only need **startDate** and **endDate** fields - everything else is optional and auto-detected.
+## Pattern 1: Simple Events Array
 
-## 📋 Required Fields
-
-### Start Date Fields (Auto-detected)
-The extension looks for these field names:
-- `startDate`, `start`, `startTime`, `startDateTime`
-- `begin`, `beginDate`, `from`, `fromDate`
-- `createdAt`, `created`, `deployedAt`, `targetDate`
-
-### End Date Fields (Auto-detected)
-The extension looks for these field names:
-- `endDate`, `end`, `endTime`, `endDateTime`
-- `finish`, `finishDate`, `to`, `toDate`
-- `completedAt`, `completed`, `actualDate`, `dueDate`
-
-**Note**: If no end date is found, the start date is used (for point-in-time events).
-
-## 🔍 Optional Fields (Auto-detected)
-
-### ID Fields
-- `id`, `ID`, `_id`, `uuid`, `key`, `name`, `title`
-- `taskId`, `eventId`, `projectId`, `phaseId`, `sprintId`
-- `milestoneId`, `version`, `deploymentId`
-
-### Y-Axis Grouping Fields
-- `priority`, `level`, `status`, `type`, `category`
-- `environment`, `team`, `assignee`, `budget`, `cost`
-- `importance`, `criticality`, `severity`, `velocity`
-
-## 📊 JSON Examples
-
-### 1. Simple Events
 ```json
 {
   "events": [
     {
-      "id": "meeting-1",
-      "name": "Team Meeting",
+      "id": "event-1",
+      "name": "Project Meeting",
       "startDate": "2024-01-15T09:00:00Z",
-      "endDate": "2024-01-15T10:00:00Z",
-      "priority": 3
+      "endDate": "2024-01-15T17:00:00Z",
+      "priority": 5
     }
   ]
 }
 ```
 
-### 2. Flexible Field Names
+**Configuration:**
 ```json
 {
-  "tasks": [
+  "name": "events",
+  "arrayPath": "events",
+  "startDatePath": "startDate",
+  "endDatePath": "endDate",
+  "yAxisPath": "priority",
+  "idPath": "id"
+}
+```
+
+## Pattern 2: Timeline with Different Field Names
+
+```json
+{
+  "timeline": [
     {
-      "taskId": "TASK-001",
-      "title": "Fix bug",
-      "begin": "2024-01-20T09:00:00Z",
-      "finish": "2024-01-22T17:00:00Z",
-      "assignee": "John Doe"
+      "name": "Discovery Phase",
+      "start": "2024-01-01T00:00:00Z",
+      "end": "2024-02-29T23:59:59Z",
+      "level": 1
     }
   ]
 }
 ```
 
-### 3. Point-in-Time Events (No End Date)
+**Configuration:**
 ```json
 {
-  "milestones": [
-    {
-      "name": "Release v1.0",
-      "targetDate": "2024-03-15T17:00:00Z",
-      "criticality": 5
-    }
-  ]
+  "name": "timeline",
+  "arrayPath": "timeline",
+  "startDatePath": "start",
+  "endDatePath": "end",
+  "yAxisPath": "level",
+  "idPath": "name"
 }
 ```
 
-### 4. Nested Arrays
+## Pattern 3: Nested Array Path
+
 ```json
 {
-  "project": {
-    "data": {
-      "sprints": [
-        {
-          "sprintId": "SPRINT-001",
-          "start": "2024-01-01T00:00:00Z",
-          "end": "2024-01-15T23:59:59Z",
-          "velocity": 32
-        }
-      ]
-    }
+  "data": {
+    "tasks": [
+      {
+        "taskId": "TASK-001",
+        "title": "Setup Environment",
+        "startTime": "2024-01-16T09:00:00Z",
+        "endTime": "2024-01-18T17:00:00Z",
+        "priority": 1
+      }
+    ]
   }
 }
 ```
 
-### 5. Mixed Field Types
+**Configuration:**
+```json
+{
+  "name": "tasks",
+  "arrayPath": "data.tasks",
+  "startDatePath": "startTime",
+  "endDatePath": "endTime",
+  "yAxisPath": "priority",
+  "idPath": "taskId"
+}
+```
+
+## Pattern 4: Deployments with Environment Grouping
+
 ```json
 {
   "deployments": [
     {
       "version": "v1.0.0",
-      "deployedAt": "2024-02-15T12:00:00Z",
-      "completedAt": "2024-02-15T12:45:00Z",
-      "environment": "production",
-      "status": "success"
-    }
-  ],
-  "meetings": [
-    {
-      "subject": "Daily Standup",
-      "startDate": "2024-01-16T09:00:00Z",
-      "endDate": "2024-01-16T09:30:00Z",
-      "attendees": 8
+      "deployedAt": "2024-01-20T14:30:00Z",
+      "completedAt": "2024-01-20T15:45:00Z",
+      "environment": "production"
     }
   ]
 }
 ```
 
-## 🎨 Array Type Detection
+**Configuration:**
+```json
+{
+  "name": "deployments",
+  "arrayPath": "deployments",
+  "startDatePath": "deployedAt",
+  "endDatePath": "completedAt",
+  "yAxisPath": "environment",
+  "idPath": "version"
+}
+```
 
-The extension automatically detects the type of timeline data based on the **array key name**:
+## Pattern 5: Projects with Budget Grouping
 
-| Array Key | Detected Type | Color |
-|-----------|---------------|-------|
-| `events` | Events | Blue |
-| `tasks` | Tasks | Green |
-| `deployments` | Deployments | Red |
-| `milestones` | Milestones | Pink |
-| `sprints` | Sprints | Orange |
-| `phases` | Phases | Brown |
-| `projects` | Projects | Purple |
-| `meetings` | Meetings | Gray |
-| `releases` | Releases | Cyan |
-| *any other* | Custom | Auto-assigned |
+```json
+{
+  "projects": [
+    {
+      "projectName": "Web App",
+      "startDate": "2024-01-01T00:00:00Z",
+      "endDate": "2024-06-30T23:59:59Z",
+      "budget": 500000
+    }
+  ]
+}
+```
 
-## ✅ What Works Automatically
+**Configuration:**
+```json
+{
+  "name": "projects",
+  "arrayPath": "projects",
+  "startDatePath": "startDate",
+  "endDatePath": "endDate",
+  "yAxisPath": "budget",
+  "idPath": "projectName"
+}
+```
 
-1. **Any array name**: `events`, `tasks`, `custom_timeline`, etc.
-2. **Flexible date formats**: ISO 8601, date strings, timestamps
-3. **Optional fields**: Missing ID, Y-axis, or other fields won't cause errors
-4. **Nested structures**: Arrays anywhere in your JSON hierarchy
-5. **Mixed naming**: Different field names in the same file
-6. **Point-in-time events**: Events with only start dates
+## Pattern 6: Phases with Numeric Grouping
 
-## 🚫 What Doesn't Work
+```json
+{
+  "phases": [
+    {
+      "phaseId": "PHASE-1",
+      "name": "Planning",
+      "startDate": "2024-01-01T00:00:00Z",
+      "endDate": "2024-02-15T23:59:59Z",
+      "budget": 150000
+    }
+  ]
+}
+```
 
-1. **No date fields**: Arrays without any recognizable date fields
-2. **Invalid dates**: Fields that can't be parsed as dates
-3. **Empty arrays**: Arrays with no items
-4. **Non-object items**: Array items that aren't objects
+**Configuration:**
+```json
+{
+  "name": "phases",
+  "arrayPath": "phases",
+  "startDatePath": "startDate",
+  "endDatePath": "endDate",
+  "yAxisPath": "budget",
+  "idPath": "phaseId"
+}
+```
 
-## 🔧 Manual Configuration (Optional)
+## Pattern 7: Milestones with Nullable End Dates
 
-If auto-detection doesn't work perfectly, you can still create manual configurations:
+```json
+{
+  "milestones": [
+    {
+      "milestoneId": "M1",
+      "title": "Requirements Done",
+      "targetDate": "2024-02-15T17:00:00Z",
+      "actualDate": "2024-02-14T16:30:00Z",
+      "criticality": 5
+    },
+    {
+      "milestoneId": "M2",
+      "title": "Design Complete",
+      "targetDate": "2024-04-30T17:00:00Z",
+      "actualDate": null,
+      "criticality": 4
+    }
+  ]
+}
+```
 
-1. **Command Palette**: "Edit Timeline Configuration"
-2. **Configuration Panel**: Click "📝 Edit JSON Config"
-3. **Manual file**: Create `timeline-config.json` in workspace
+**Configuration:**
+```json
+{
+  "name": "milestones",
+  "arrayPath": "milestones",
+  "startDatePath": "targetDate",
+  "endDatePath": "actualDate",
+  "yAxisPath": "criticality",
+  "idPath": "milestoneId"
+}
+```
 
-## 🎯 Best Practices
+## Pattern 8: Sprints with Velocity Tracking
 
-1. **Use standard field names** when possible (`startDate`, `endDate`, `id`)
-2. **Include meaningful IDs** for better identification
-3. **Add grouping fields** (`priority`, `team`, `status`) for better visualization
-4. **Use ISO date format** for consistency
-5. **Test with small files** first to verify detection
+```json
+{
+  "sprints": [
+    {
+      "sprintId": "SPRINT-001",
+      "name": "Foundation",
+      "startDate": "2024-01-15T00:00:00Z",
+      "endDate": "2024-01-29T23:59:59Z",
+      "velocity": 32
+    }
+  ]
+}
+```
 
-## 🧪 Testing Auto-Detection
+**Configuration:**
+```json
+{
+  "name": "sprints",
+  "arrayPath": "sprints",
+  "startDatePath": "startDate",
+  "endDatePath": "endDate",
+  "yAxisPath": "velocity",
+  "idPath": "sprintId"
+}
+```
 
-Use the `comprehensive-example.json` file in the sample project to see all patterns in action:
-- Multiple array types
-- Different field naming conventions
-- Nested structures
-- Optional fields
-- Point-in-time events
+## Complete Configuration File
 
-The extension will automatically detect and visualize all timeline data without any configuration!
+Here's a complete `timeline-config.json` that handles all the above patterns:
+
+```json
+{
+  "configurations": [
+    {
+      "name": "events",
+      "arrayPath": "events",
+      "startDatePath": "startDate",
+      "endDatePath": "endDate",
+      "yAxisPath": "priority",
+      "idPath": "id",
+      "color": "#1f77b4",
+      "enabled": true
+    },
+    {
+      "name": "timeline",
+      "arrayPath": "timeline",
+      "startDatePath": "start",
+      "endDatePath": "end",
+      "yAxisPath": "level",
+      "idPath": "name",
+      "color": "#ff7f0e",
+      "enabled": true
+    },
+    {
+      "name": "tasks",
+      "arrayPath": "data.tasks",
+      "startDatePath": "startTime",
+      "endDatePath": "endTime",
+      "yAxisPath": "priority",
+      "idPath": "taskId",
+      "color": "#2ca02c",
+      "enabled": true
+    },
+    {
+      "name": "deployments",
+      "arrayPath": "deployments",
+      "startDatePath": "deployedAt",
+      "endDatePath": "completedAt",
+      "yAxisPath": "environment",
+      "idPath": "version",
+      "color": "#d62728",
+      "enabled": true
+    },
+    {
+      "name": "projects",
+      "arrayPath": "projects",
+      "startDatePath": "startDate",
+      "endDatePath": "endDate",
+      "yAxisPath": "budget",
+      "idPath": "projectName",
+      "color": "#9467bd",
+      "enabled": true
+    },
+    {
+      "name": "phases",
+      "arrayPath": "phases",
+      "startDatePath": "startDate",
+      "endDatePath": "endDate",
+      "yAxisPath": "budget",
+      "idPath": "phaseId",
+      "color": "#8c564b",
+      "enabled": true
+    },
+    {
+      "name": "milestones",
+      "arrayPath": "milestones",
+      "startDatePath": "targetDate",
+      "endDatePath": "actualDate",
+      "yAxisPath": "criticality",
+      "idPath": "milestoneId",
+      "color": "#e377c2",
+      "enabled": true
+    },
+    {
+      "name": "sprints",
+      "arrayPath": "sprints",
+      "startDatePath": "startDate",
+      "endDatePath": "endDate",
+      "yAxisPath": "velocity",
+      "idPath": "sprintId",
+      "color": "#7f7f7f",
+      "enabled": true
+    }
+  ]
+}
+```
+
+## Key Points
+
+1. **Array Paths**: Can be simple (`"events"`) or nested (`"data.tasks"`)
+2. **Date Fields**: Support various field names (`startDate`, `start`, `deployedAt`, `targetDate`)
+3. **Y-Axis Grouping**: Can be strings (`environment`), numbers (`budget`, `priority`), or any field
+4. **ID Fields**: Used for unique identification and labeling
+5. **Nullable Dates**: End dates can be `null` for ongoing or planned items
+6. **Colors**: Each configuration should have a unique color for visual distinction
