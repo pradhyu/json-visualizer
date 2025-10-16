@@ -82,7 +82,7 @@ export class ConfigurationManager {
                 yAxisPath: 'priority',
                 idPath: 'id',
                 color: '#1f77b4',
-                enabled: true
+                enabled: false
             },
             {
                 name: 'timeline',
@@ -92,7 +92,7 @@ export class ConfigurationManager {
                 yAxisPath: 'level',
                 idPath: 'name',
                 color: '#ff7f0e',
-                enabled: true
+                enabled: false
             },
             {
                 name: 'tasks',
@@ -102,7 +102,7 @@ export class ConfigurationManager {
                 yAxisPath: 'priority',
                 idPath: 'taskId',
                 color: '#2ca02c',
-                enabled: true
+                enabled: false
             },
             {
                 name: 'deployments',
@@ -112,7 +112,7 @@ export class ConfigurationManager {
                 yAxisPath: 'environment',
                 idPath: 'version',
                 color: '#d62728',
-                enabled: true
+                enabled: false
             },
             {
                 name: 'projects',
@@ -122,7 +122,7 @@ export class ConfigurationManager {
                 yAxisPath: 'budget',
                 idPath: 'projectName',
                 color: '#9467bd',
-                enabled: true
+                enabled: false
             },
             {
                 name: 'phases',
@@ -132,7 +132,7 @@ export class ConfigurationManager {
                 yAxisPath: 'budget',
                 idPath: 'phaseId',
                 color: '#8c564b',
-                enabled: true
+                enabled: false
             },
             {
                 name: 'milestones',
@@ -142,7 +142,7 @@ export class ConfigurationManager {
                 yAxisPath: 'criticality',
                 idPath: 'milestoneId',
                 color: '#e377c2',
-                enabled: true
+                enabled: false
             },
             {
                 name: 'sprints',
@@ -152,7 +152,7 @@ export class ConfigurationManager {
                 yAxisPath: 'velocity',
                 idPath: 'sprintId',
                 color: '#7f7f7f',
-                enabled: true
+                enabled: false
             }
         ];
     }
