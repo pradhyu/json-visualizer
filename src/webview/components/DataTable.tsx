@@ -93,9 +93,9 @@ export const DataTable: React.FC<DataTableProps> = ({
         }
         setFilters(newFilters);
         
-        // Notify parent component about filter changes
-        onFilterUpdate({ columnFilters: newFilters });
-    }, [filters, onFilterUpdate]);
+        // Don't notify parent - keep filters local to avoid data refresh
+        // onFilterUpdate({ columnFilters: newFilters });
+    }, [filters]);
 
     const handleCellEdit = useCallback((rowIndex: number, column: string, value: any) => {
         const key = `${rowIndex}-${column}`;

@@ -219,26 +219,28 @@ export const App: React.FC = () => {
 
                 <div className="app-content">
                     <aside className="sidebar" role="complementary" aria-label="File explorer and configuration panel">
-                        <ErrorBoundary fallback={
-                            <div className="sidebar-error" role="alert">
-                                <p>Error loading file explorer</p>
-                                <button onClick={() => window.location.reload()}>Reload</button>
-                            </div>
-                        }>
-                            <FileExplorer
-                                currentDirectory={state.currentDirectory}
-                                availableFiles={state.availableFiles}
-                                selectedFiles={state.selectedFiles}
-                                onFileSelect={handleFileSelect}
-                                onDirectoryChange={(directoryPath: string) => {
-                                    vscode.postMessage({
-                                        type: 'readDirectory',
-                                        data: { directoryPath }
-                                    });
-                                }}
-                                loading={state.loading}
-                            />
-                        </ErrorBoundary>
+                        {state.currentDirectory && (
+                            <ErrorBoundary fallback={
+                                <div className="sidebar-error" role="alert">
+                                    <p>Error loading file explorer</p>
+                                    <button onClick={() => window.location.reload()}>Reload</button>
+                                </div>
+                            }>
+                                <FileExplorer
+                                    currentDirectory={state.currentDirectory}
+                                    availableFiles={state.availableFiles}
+                                    selectedFiles={state.selectedFiles}
+                                    onFileSelect={handleFileSelect}
+                                    onDirectoryChange={(directoryPath: string) => {
+                                        vscode.postMessage({
+                                            type: 'readDirectory',
+                                            data: { directoryPath }
+                                        });
+                                    }}
+                                    loading={state.loading}
+                                />
+                            </ErrorBoundary>
+                        )}
                         
                         {state.showConfig && (
                             <ErrorBoundary fallback={
