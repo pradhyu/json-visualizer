@@ -189,18 +189,8 @@ export class TimelineVisualizerProvider implements vscode.WebviewPanelSerializer
         if (!this._panel) return;
 
         try {
-            const fileUri = vscode.Uri.file(filePath);
-            const fileContent = await vscode.workspace.fs.readFile(fileUri);
-            const jsonContent = JSON.parse(fileContent.toString());
-            
-            this._panel.webview.postMessage({
-                type: 'fileLoaded',
-                data: {
-                    filePath: filePath,
-                    fileName: path.basename(filePath),
-                    content: jsonContent
-                }
-            });
+            // Use the existing _loadFile method which properly processes the file
+            await this._loadFile(filePath);
         } catch (error) {
             this._panel.webview.postMessage({
                 type: 'error',
