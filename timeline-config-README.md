@@ -4,6 +4,15 @@
 
 The `timeline-config.json` file allows you to easily configure how the JSON Timeline Visualizer interprets your JSON data. This file should be placed in your workspace root directory.
 
+## 🎯 Key Principle: Array Key = Object Type
+
+**The `name` should match the array key in your JSON for automatic type detection.**
+
+For example:
+- JSON has `"events": [...]` → Configuration name should be `"events"`
+- JSON has `"tasks": [...]` → Configuration name should be `"tasks"`
+- JSON has `"deployments": [...]` → Configuration name should be `"deployments"`
+
 ## Configuration Structure
 
 ```json
@@ -27,8 +36,8 @@ The `timeline-config.json` file allows you to easily configure how the JSON Time
 
 ### Required Properties
 
-- **`name`** (string): Unique identifier for this configuration
-- **`arrayPath`** (string): Path to the array in your JSON (supports dot notation like `data.events`)
+- **`name`** (string): Must match the array key in your JSON (e.g., "events", "tasks", "deployments")
+- **`arrayPath`** (string): Path to the array in your JSON (usually same as name, supports dot notation)
 - **`startDatePath`** (string): Path to the start date field within each array item
 - **`endDatePath`** (string): Path to the end date field within each array item
 - **`enabled`** (boolean): Whether this configuration is active
@@ -41,22 +50,59 @@ The `timeline-config.json` file allows you to easily configure how the JSON Time
 
 ## Path Examples
 
-### Simple Paths
+### Simple Paths (Recommended)
 ```json
 {
+  "name": "events",                // Must match JSON key
   "arrayPath": "events",           // JSON: { "events": [...] }
   "startDatePath": "startDate",    // Item: { "startDate": "2024-01-01" }
   "endDatePath": "endDate"         // Item: { "endDate": "2024-01-02" }
 }
 ```
 
-### Nested Paths
+### Nested Paths (When Necessary)
 ```json
 {
+  "name": "events",                        // Type name for display
   "arrayPath": "data.timeline.events",     // JSON: { "data": { "timeline": { "events": [...] } } }
   "startDatePath": "dates.start",          // Item: { "dates": { "start": "2024-01-01" } }
   "endDatePath": "dates.end",              // Item: { "dates": { "end": "2024-01-02" } }
   "yAxisPath": "metadata.priority"         // Item: { "metadata": { "priority": 5 } }
+}
+```
+
+## 📋 Recommended JSON Structure
+
+For best results, structure your JSON with top-level arrays named by object type:
+
+```json
+{
+  "events": [
+    {
+      "id": "event-001",
+      "name": "Project Kickoff",
+      "startDate": "2024-01-15T09:00:00Z",
+      "endDate": "2024-01-15T11:00:00Z",
+      "priority": 5
+    }
+  ],
+  "tasks": [
+    {
+      "taskId": "TASK-001",
+      "title": "Setup Environment",
+      "startTime": "2024-01-16T09:00:00Z",
+      "endTime": "2024-01-18T17:00:00Z",
+      "priority": 1
+    }
+  ],
+  "deployments": [
+    {
+      "version": "v1.0.0",
+      "deployedAt": "2024-02-10T10:00:00Z",
+      "completedAt": "2024-02-10T10:30:00Z",
+      "environment": "production"
+    }
+  ]
 }
 ```
 

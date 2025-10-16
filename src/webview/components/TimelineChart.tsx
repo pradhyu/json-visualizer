@@ -4,6 +4,7 @@ import * as d3 from 'd3';
 interface TimelineChartProps {
     data: any;
     settings: any;
+    tableFilters?: Record<string, string>;
     onFilterUpdate: (filterData: any) => void;
 }
 
@@ -24,6 +25,7 @@ enum ZoomLevel {
 export const TimelineChart: React.FC<TimelineChartProps> = ({
     data,
     settings,
+    tableFilters = {},
     onFilterUpdate
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -82,6 +84,49 @@ export const TimelineChart: React.FC<TimelineChartProps> = ({
         }
     }, []);
 
+    // Filter entities based on table filters
+    const filterEntities = useCallback((entities: any[]) => {
+        if (!tableFilters || Object.keys(tableFilters).length === 0) {
+            return entities;
+        }
+
+        return entities.filter((entity: any) => {
+            // Create a flattened representation of the entity for filtering
+            const flatEntity: any = {
+                _id: entity.id,
+                _startDate: entity.startDate,
+                _endDate: entity.endDate,
+                _sourceArray: entity.sourceArray,
+                _sourceFile: entity.sourceFile,
+                _duration: new Date(entity.endDate).getTime() - new Date(entity.startDate).getTime()
+            };
+
+            if (entity.yValue !== undefined) {
+                flatEntity._yValue = entity.yValue;
+            }
+
+            // Add original data properties
+            if (entity.originalData && typeof entity.originalData === 'object') {
+                Object.keys(entity.originalData).forEach(key => {
+                    flatEntity[key] = entity.originalData[key];
+                });
+            }
+
+            // Apply filters
+            return Object.entries(tableFilters).every(([column, filterValue]) => {
+                if (!filterValue) return true;
+                
+                const cellValue = flatEntity[column];
+                if (cellValue === undefined || cellValue === null) return false;
+                
+                const stringValue = String(cellValue).toLowerCase();
+                const filterString = filterValue.toLowerCase();
+                
+                return stringValue.includes(filterString);
+            });
+        });
+    }, [tableFilters]);
+
     // D3.js chart rendering
     useEffect(() => {
         if (!data || !data.entities || data.entities.length === 0 || !containerRef.current) {
@@ -91,7 +136,8 @@ export const TimelineChart: React.FC<TimelineChartProps> = ({
         // Clear previous chart
         d3.select(containerRef.current).selectAll('*').remove();
 
-        const entities = data.entities;
+        const allEntities = data.entities;
+        const entities = filterEntities(allEntities);
         const configurations = data.configurations || [];
         
         // Set up dimensions
@@ -295,7 +341,7 @@ export const TimelineChart: React.FC<TimelineChartProps> = ({
             tooltip.remove();
         };
 
-    }, [data, dimensions, selectedEntities]);
+    }, [data, dimensions, selectedEntities, tableFilters, filterEntities]);
 
     if (!data || !data.entities || data.entities.length === 0) {
         return (

@@ -70,6 +70,7 @@ export class ConfigurationManager {
 
     /**
      * Get default configurations for common JSON structures
+     * Note: name should match the array key for automatic type detection
      */
     public getDefaultConfigs(): ArrayConfig[] {
         return [
@@ -95,7 +96,7 @@ export class ConfigurationManager {
             },
             {
                 name: 'tasks',
-                arrayPath: 'data.tasks',
+                arrayPath: 'tasks',
                 startDatePath: 'startTime',
                 endDatePath: 'endTime',
                 yAxisPath: 'priority',
@@ -121,6 +122,36 @@ export class ConfigurationManager {
                 yAxisPath: 'budget',
                 idPath: 'projectName',
                 color: '#9467bd',
+                enabled: true
+            },
+            {
+                name: 'phases',
+                arrayPath: 'phases',
+                startDatePath: 'startDate',
+                endDatePath: 'endDate',
+                yAxisPath: 'budget',
+                idPath: 'phaseId',
+                color: '#8c564b',
+                enabled: true
+            },
+            {
+                name: 'milestones',
+                arrayPath: 'milestones',
+                startDatePath: 'targetDate',
+                endDatePath: 'actualDate',
+                yAxisPath: 'criticality',
+                idPath: 'milestoneId',
+                color: '#e377c2',
+                enabled: true
+            },
+            {
+                name: 'sprints',
+                arrayPath: 'sprints',
+                startDatePath: 'startDate',
+                endDatePath: 'endDate',
+                yAxisPath: 'velocity',
+                idPath: 'sprintId',
+                color: '#7f7f7f',
                 enabled: true
             }
         ];

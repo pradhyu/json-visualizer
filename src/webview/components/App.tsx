@@ -23,7 +23,7 @@ declare global {
 const vscode = window.vscodeApi || {
     postMessage: () => console.warn('VSCode API not available'),
     getState: () => null,
-    setState: () => {}
+    setState: () => { }
 };
 
 // Types for component state
@@ -40,6 +40,7 @@ interface AppState {
     showConfig: boolean;
     loading: boolean;
     error: string | null;
+    tableFilters: Record<string, string>;
 }
 
 export const App: React.FC = () => {
@@ -55,13 +56,14 @@ export const App: React.FC = () => {
         showTable: true,
         showConfig: false,
         loading: false,
-        error: null
+        error: null,
+        tableFilters: {}
     });
 
     // Message handler
     const handleMessage = useCallback((event: MessageEvent) => {
         const message = event.data;
-        
+
         switch (message.type) {
             case 'initialData':
                 setState(prev => ({
@@ -72,7 +74,7 @@ export const App: React.FC = () => {
                     isReady: true
                 }));
                 break;
-                
+
             case 'dataLoaded':
                 setState(prev => ({
                     ...prev,
@@ -82,7 +84,7 @@ export const App: React.FC = () => {
                     error: null
                 }));
                 break;
-                
+
             case 'multipleFilesLoaded':
                 setState(prev => ({
                     ...prev,
@@ -92,7 +94,7 @@ export const App: React.FC = () => {
                     error: null
                 }));
                 break;
-                
+
             case 'directoryLoaded':
                 setState(prev => ({
                     ...prev,
@@ -100,14 +102,14 @@ export const App: React.FC = () => {
                     availableFiles: message.data.files
                 }));
                 break;
-                
+
             case 'visualizationDataUpdated':
                 setState(prev => ({
                     ...prev,
                     visualizationData: message.data.visualizationData
                 }));
                 break;
-                
+
             case 'configurationAdded':
             case 'configurationRemoved':
             case 'configurationsImported':
@@ -117,7 +119,7 @@ export const App: React.FC = () => {
                     configurations: message.data.configurations || prev.configurations
                 }));
                 break;
-                
+
             case 'loadError':
                 setState(prev => ({
                     ...prev,
@@ -125,7 +127,7 @@ export const App: React.FC = () => {
                     error: `Failed to load file: ${message.data.filePath}`
                 }));
                 break;
-                
+
             case 'error':
                 setState(prev => ({
                     ...prev,
@@ -138,7 +140,7 @@ export const App: React.FC = () => {
 
     useEffect(() => {
         window.addEventListener('message', handleMessage);
-        
+
         // Notify extension that webview is ready
         vscode.postMessage({ type: 'ready' });
 
@@ -150,7 +152,7 @@ export const App: React.FC = () => {
     // Event handlers
     const handleFileSelect = useCallback((filePaths: string[]) => {
         setState(prev => ({ ...prev, loading: true, error: null }));
-        
+
         if (filePaths.length === 1) {
             vscode.postMessage({
                 type: 'loadFile',
@@ -172,10 +174,10 @@ export const App: React.FC = () => {
     }, []);
 
     const handleFilterUpdate = useCallback((filterData: any) => {
-        vscode.postMessage({
-            type: 'updateFilter',
-            data: filterData
-        });
+        setState(prev => ({
+            ...prev,
+            tableFilters: filterData.columnFilters || {}
+        }));
     }, []);
 
     const handleViewToggle = useCallback((viewType: 'chart' | 'table' | 'config') => {
@@ -241,7 +243,7 @@ export const App: React.FC = () => {
                                 />
                             </ErrorBoundary>
                         )}
-                        
+
                         {state.showConfig && (
                             <ErrorBoundary fallback={
                                 <div className="config-error">
@@ -263,7 +265,7 @@ export const App: React.FC = () => {
                                 <LoadingSpinner message="Processing JSON files..." />
                             </div>
                         )}
-                        
+
                         {!hasData && !state.loading ? (
                             <EmptyState
                                 icon="📊"
@@ -296,12 +298,13 @@ export const App: React.FC = () => {
                                             <TimelineChart
                                                 data={state.visualizationData}
                                                 settings={state.settings}
+                                                tableFilters={state.tableFilters}
                                                 onFilterUpdate={handleFilterUpdate}
                                             />
                                         </div>
                                     </ErrorBoundary>
                                 )}
-                                
+
                                 {state.showTable && (
                                     <ErrorBoundary fallback={
                                         <div className="table-error">

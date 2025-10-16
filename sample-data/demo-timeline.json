@@ -54,8 +54,7 @@
       "deliverables": ["MVP", "Core Features", "API Integration"]
     }
   ],
-  "data": {
-    "tasks": [
+  "tasks": [
       {
         "taskId": "TASK-001",
         "title": "Set up development environment",
@@ -83,8 +82,7 @@
         "assignee": "Bob Johnson",
         "status": "completed"
       }
-    ]
-  },
+    ],
   "deployments": [
     {
       "version": "v1.0.0-alpha",

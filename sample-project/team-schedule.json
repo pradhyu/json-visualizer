@@ -1,0 +1,117 @@
+{
+  "timeline": [
+    {
+      "name": "Backend Team Sprint 1",
+      "start": "2024-03-15T00:00:00Z",
+      "end": "2024-03-29T23:59:59Z",
+      "level": 1,
+      "status": "completed",
+      "deliverables": ["User Authentication API", "Database Schema"]
+    },
+    {
+      "name": "Backend Team Sprint 2",
+      "start": "2024-04-01T00:00:00Z",
+      "end": "2024-04-15T23:59:59Z",
+      "level": 1,
+      "status": "completed",
+      "deliverables": ["Product Catalog API", "Search Engine Integration"]
+    },
+    {
+      "name": "Frontend Team Sprint 1",
+      "start": "2024-05-01T00:00:00Z",
+      "end": "2024-05-15T23:59:59Z",
+      "level": 2,
+      "status": "completed",
+      "deliverables": ["Login/Register Pages", "Product Listing"]
+    },
+    {
+      "name": "Frontend Team Sprint 2",
+      "start": "2024-05-16T00:00:00Z",
+      "end": "2024-05-30T23:59:59Z",
+      "level": 2,
+      "status": "in-progress",
+      "deliverables": ["Shopping Cart UI", "User Dashboard"]
+    },
+    {
+      "name": "QA Testing Phase 1",
+      "start": "2024-06-01T00:00:00Z",
+      "end": "2024-06-15T23:59:59Z",
+      "level": 3,
+      "status": "planned",
+      "deliverables": ["Automated Test Suite", "Manual Testing"]
+    }
+  ],
+  "tasks": [
+      {
+        "taskId": "TASK-001",
+        "title": "Set up CI/CD pipeline",
+        "startTime": "2024-03-01T09:00:00Z",
+        "endTime": "2024-03-10T17:00:00Z",
+        "priority": 1,
+        "assignee": "DevOps Team",
+        "status": "completed"
+      },
+      {
+        "taskId": "TASK-002",
+        "title": "Design database schema",
+        "startTime": "2024-03-05T09:00:00Z",
+        "endTime": "2024-03-20T17:00:00Z",
+        "priority": 2,
+        "assignee": "Backend Lead",
+        "status": "completed"
+      },
+      {
+        "taskId": "TASK-003",
+        "title": "Implement user authentication",
+        "startTime": "2024-03-15T09:00:00Z",
+        "endTime": "2024-03-29T17:00:00Z",
+        "priority": 1,
+        "assignee": "Backend Developer 1",
+        "status": "completed"
+      },
+      {
+        "taskId": "TASK-004",
+        "title": "Create product catalog API",
+        "startTime": "2024-04-01T09:00:00Z",
+        "endTime": "2024-04-15T17:00:00Z",
+        "priority": 2,
+        "assignee": "Backend Developer 2",
+        "status": "completed"
+      },
+      {
+        "taskId": "TASK-005",
+        "title": "Build shopping cart functionality",
+        "startTime": "2024-04-16T09:00:00Z",
+        "endTime": "2024-05-15T17:00:00Z",
+        "priority": 2,
+        "assignee": "Full Stack Developer",
+        "status": "in-progress"
+      }
+    ],
+  "projects": [
+    {
+      "projectName": "E-commerce Backend",
+      "startDate": "2024-03-01T00:00:00Z",
+      "endDate": "2024-08-31T23:59:59Z",
+      "budget": 600000,
+      "team": "Backend Team",
+      "status": "active"
+    },
+    {
+      "projectName": "E-commerce Frontend",
+      "startDate": "2024-05-01T00:00:00Z",
+      "endDate": "2024-09-30T23:59:59Z",
+      "budget": 400000,
+      "team": "Frontend Team",
+      "status": "active"
+    },
+    {
+      "projectName": "Mobile App Development",
+      "startDate": "2024-07-01T00:00:00Z",
+      "endDate": "2024-12-31T23:59:59Z",
+      "budget": 350000,
+      "team": "Mobile Team",
+      "status": "planning"
+    }
+  ]
+}

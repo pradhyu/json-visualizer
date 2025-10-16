@@ -1,0 +1,90 @@
+{
+  "deployments": [
+    {
+      "version": "v1.0.0-alpha.1",
+      "deployedAt": "2024-03-20T10:00:00Z",
+      "completedAt": "2024-03-20T10:45:00Z",
+      "environment": "development",
+      "status": "success",
+      "features": ["User Registration", "Basic Authentication"]
+    },
+    {
+      "version": "v1.0.0-alpha.2",
+      "deployedAt": "2024-04-05T14:30:00Z",
+      "completedAt": "2024-04-05T15:15:00Z",
+      "environment": "development",
+      "status": "success",
+      "features": ["Product Catalog", "Search Functionality"]
+    },
+    {
+      "version": "v1.0.0-beta.1",
+      "deployedAt": "2024-05-10T09:00:00Z",
+      "completedAt": "2024-05-10T10:30:00Z",
+      "environment": "staging",
+      "status": "success",
+      "features": ["Shopping Cart", "User Profiles"]
+    },
+    {
+      "version": "v1.0.0-beta.2",
+      "deployedAt": "2024-06-15T16:00:00Z",
+      "completedAt": "2024-06-15T17:45:00Z",
+      "environment": "staging",
+      "status": "failed",
+      "features": ["Payment Gateway", "Order Management"]
+    },
+    {
+      "version": "v1.0.0-beta.3",
+      "deployedAt": "2024-06-20T11:00:00Z",
+      "completedAt": "2024-06-20T12:15:00Z",
+      "environment": "staging",
+      "status": "success",
+      "features": ["Payment Gateway (Fixed)", "Order Management", "Email Notifications"]
+    },
+    {
+      "version": "v1.0.0-rc.1",
+      "deployedAt": "2024-07-25T13:00:00Z",
+      "completedAt": "2024-07-25T14:30:00Z",
+      "environment": "production",
+      "status": "success",
+      "features": ["Full Feature Set", "Performance Optimizations"]
+    }
+  ],
+  "events": [
+    {
+      "id": "deploy-001",
+      "name": "Alpha Release Deployment",
+      "startDate": "2024-03-20T09:30:00Z",
+      "endDate": "2024-03-20T11:00:00Z",
+      "priority": 3,
+      "type": "deployment",
+      "description": "First alpha version deployment to development environment"
+    },
+    {
+      "id": "deploy-002",
+      "name": "Beta Release Deployment",
+      "startDate": "2024-05-10T08:30:00Z",
+      "endDate": "2024-05-10T11:00:00Z",
+      "priority": 4,
+      "type": "deployment",
+      "description": "Beta version deployment to staging environment"
+    },
+    {
+      "id": "hotfix-001",
+      "name": "Payment Gateway Hotfix",
+      "startDate": "2024-06-16T09:00:00Z",
+      "endDate": "2024-06-20T12:30:00Z",
+      "priority": 5,
+      "type": "hotfix",
+      "description": "Critical hotfix for payment gateway issues"
+    },
+    {
+      "id": "deploy-003",
+      "name": "Production Release",
+      "startDate": "2024-07-25T12:00:00Z",
+      "endDate": "2024-07-25T15:00:00Z",
+      "priority": 5,
+      "type": "deployment",
+      "description": "First production release deployment"
+    }
+  ]
+}

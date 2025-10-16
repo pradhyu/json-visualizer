@@ -1,0 +1,164 @@
+{
+  "events": [
+    {
+      "id": "event-001",
+      "name": "Project Kickoff Meeting",
+      "startDate": "2024-01-15T09:00:00Z",
+      "endDate": "2024-01-15T11:00:00Z",
+      "priority": 5,
+      "type": "meeting",
+      "attendees": ["PM", "Tech Lead", "Stakeholders"]
+    },
+    {
+      "id": "event-002",
+      "name": "Architecture Review",
+      "startDate": "2024-02-01T14:00:00Z",
+      "endDate": "2024-02-01T16:00:00Z",
+      "priority": 4,
+      "type": "review",
+      "attendees": ["Architects", "Senior Developers"]
+    },
+    {
+      "id": "event-003",
+      "name": "Go-Live Celebration",
+      "startDate": "2024-07-25T17:00:00Z",
+      "endDate": "2024-07-25T19:00:00Z",
+      "priority": 2,
+      "type": "celebration",
+      "attendees": ["All Team Members"]
+    }
+  ],
+  "tasks": [
+    {
+      "taskId": "TASK-001",
+      "title": "Setup Development Environment",
+      "startTime": "2024-01-16T09:00:00Z",
+      "endTime": "2024-01-18T17:00:00Z",
+      "priority": 1,
+      "assignee": "DevOps Engineer",
+      "status": "completed",
+      "estimatedHours": 16
+    },
+    {
+      "taskId": "TASK-002",
+      "title": "Implement User Authentication",
+      "startTime": "2024-01-22T09:00:00Z",
+      "endTime": "2024-02-05T17:00:00Z",
+      "priority": 2,
+      "assignee": "Backend Developer",
+      "status": "completed",
+      "estimatedHours": 80
+    },
+    {
+      "taskId": "TASK-003",
+      "title": "Create Dashboard UI",
+      "startTime": "2024-02-06T09:00:00Z",
+      "endTime": "2024-02-20T17:00:00Z",
+      "priority": 2,
+      "assignee": "Frontend Developer",
+      "status": "in-progress",
+      "estimatedHours": 60
+    }
+  ],
+  "deployments": [
+    {
+      "version": "v1.0.0-alpha",
+      "deployedAt": "2024-02-10T10:00:00Z",
+      "completedAt": "2024-02-10T10:30:00Z",
+      "environment": "development",
+      "status": "success",
+      "deployedBy": "CI/CD Pipeline"
+    },
+    {
+      "version": "v1.0.0-beta",
+      "deployedAt": "2024-03-15T14:00:00Z",
+      "completedAt": "2024-03-15T14:45:00Z",
+      "environment": "staging",
+      "status": "success",
+      "deployedBy": "Release Manager"
+    },
+    {
+      "version": "v1.0.0",
+      "deployedAt": "2024-07-25T12:00:00Z",
+      "completedAt": "2024-07-25T13:15:00Z",
+      "environment": "production",
+      "status": "success",
+      "deployedBy": "Release Manager"
+    }
+  ],
+  "projects": [
+    {
+      "projectName": "Customer Portal",
+      "startDate": "2024-01-15T00:00:00Z",
+      "endDate": "2024-07-25T23:59:59Z",
+      "budget": 500000,
+      "team": "Full Stack Team",
+      "status": "active",
+      "client": "Internal"
+    },
+    {
+      "projectName": "Mobile App",
+      "startDate": "2024-06-01T00:00:00Z",
+      "endDate": "2024-12-31T23:59:59Z",
+      "budget": 300000,
+      "team": "Mobile Team",
+      "status": "planning",
+      "client": "External"
+    }
+  ],
+  "milestones": [
+    {
+      "milestoneId": "M1",
+      "title": "MVP Complete",
+      "targetDate": "2024-04-30T17:00:00Z",
+      "actualDate": "2024-05-02T16:30:00Z",
+      "criticality": 5,
+      "owner": "Product Manager"
+    },
+    {
+      "milestoneId": "M2",
+      "title": "Beta Testing Complete",
+      "targetDate": "2024-06-30T17:00:00Z",
+      "actualDate": null,
+      "criticality": 4,
+      "owner": "QA Lead"
+    },
+    {
+      "milestoneId": "M3",
+      "title": "Production Launch",
+      "targetDate": "2024-07-25T12:00:00Z",
+      "actualDate": "2024-07-25T13:15:00Z",
+      "criticality": 5,
+      "owner": "Release Manager"
+    }
+  ],
+  "sprints": [
+    {
+      "sprintId": "SPRINT-001",
+      "name": "Foundation Sprint",
+      "startDate": "2024-01-15T00:00:00Z",
+      "endDate": "2024-01-29T23:59:59Z",
+      "velocity": 32,
+      "capacity": 120,
+      "team": "Development Team"
+    },
+    {
+      "sprintId": "SPRINT-002",
+      "name": "Authentication Sprint",
+      "startDate": "2024-01-30T00:00:00Z",
+      "endDate": "2024-02-13T23:59:59Z",
+      "velocity": 28,
+      "capacity": 120,
+      "team": "Development Team"
+    },
+    {
+      "sprintId": "SPRINT-003",
+      "name": "Dashboard Sprint",
+      "startDate": "2024-02-14T00:00:00Z",
+      "endDate": "2024-02-28T23:59:59Z",
+      "velocity": 35,
+      "capacity": 140,
+      "team": "Development Team"
+    }
+  ]
+}
