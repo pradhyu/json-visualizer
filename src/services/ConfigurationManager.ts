@@ -376,16 +376,10 @@ export class ConfigurationManager {
     }
 
     /**
-     * Load configurations from JSON file or VSCode settings
+     * Load configurations from VSCode settings (synchronous fallback)
      */
     private loadConfigurations(): ArrayConfig[] {
-        // Try to load from workspace JSON file first
-        const workspaceConfigs = this.loadFromJsonFile();
-        if (workspaceConfigs.length > 0) {
-            return workspaceConfigs;
-        }
-
-        // Fall back to VSCode settings
+        // For now, use VSCode settings as fallback
         const config = vscode.workspace.getConfiguration(ConfigurationManager.EXTENSION_ID);
         const stored = config.get<ArrayConfig[]>(ConfigurationManager.CONFIG_KEY, []);
         
@@ -400,7 +394,7 @@ export class ConfigurationManager {
     /**
      * Load configurations from timeline-config.json file in workspace
      */
-    private loadFromJsonFile(): ArrayConfig[] {
+    public async loadFromJsonFile(): Promise<ArrayConfig[]> {
         try {
             const workspaceFolders = vscode.workspace.workspaceFolders;
             if (!workspaceFolders || workspaceFolders.length === 0) {
@@ -408,14 +402,21 @@ export class ConfigurationManager {
             }
 
             const configPath = vscode.Uri.joinPath(workspaceFolders[0].uri, 'timeline-config.json');
-            const configContent = vscode.workspace.fs.readFile(configPath);
-            
-            return configContent.then(content => {
-                const configData = JSON.parse(content.toString());
-                return configData.configurations || [];
-            }).catch(() => []);
+            const configContent = await vscode.workspace.fs.readFile(configPath);
+            const configData = JSON.parse(configContent.toString());
+            return configData.configurations || [];
         } catch (error) {
             return [];
+        }
+    }
+
+    /**
+     * Initialize configurations from JSON file if available
+     */
+    public async initializeFromJsonFile(): Promise<void> {
+        const jsonConfigs = await this.loadFromJsonFile();
+        if (jsonConfigs.length > 0) {
+            this._configurations = jsonConfigs;
         }
     }
 
@@ -453,6 +454,47 @@ export class ConfigurationManager {
     public async resetToDefaults(): Promise<void> {
         this._configurations = this.getDefaultConfigs();
         await this.saveConfigurations();
+    }
+
+    /**
+     * Open timeline-config.json file for editing
+     */
+    public async openConfigFile(): Promise<void> {
+        try {
+            const workspaceFolders = vscode.workspace.workspaceFolders;
+            if (!workspaceFolders || workspaceFolders.length === 0) {
+                vscode.window.showErrorMessage('No workspace folder found. Please open a workspace first.');
+                return;
+            }
+
+            const configPath = vscode.Uri.joinPath(workspaceFolders[0].uri, 'timeline-config.json');
+            
+            // Check if file exists, if not create it with default config
+            try {
+                await vscode.workspace.fs.stat(configPath);
+            } catch {
+                // File doesn't exist, create it
+                await this.createDefaultConfigFile(configPath);
+            }
+
+            // Open the file
+            const document = await vscode.workspace.openTextDocument(configPath);
+            await vscode.window.showTextDocument(document);
+        } catch (error) {
+            vscode.window.showErrorMessage(`Failed to open config file: ${error}`);
+        }
+    }
+
+    /**
+     * Create default config file
+     */
+    private async createDefaultConfigFile(configPath: vscode.Uri): Promise<void> {
+        const defaultConfig = {
+            configurations: this.getDefaultConfigs()
+        };
+        
+        const configContent = JSON.stringify(defaultConfig, null, 2);
+        await vscode.workspace.fs.writeFile(configPath, Buffer.from(configContent, 'utf8'));
     }
 
     /**
