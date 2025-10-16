@@ -8,17 +8,23 @@ export class JsonParserService {
         const fileName = this.getFileNameFromPath(filePath);
         const entities: TimelineEntity[] = [];
 
-        for (const config of configs) {
-            if (!config.enabled) continue;
-
-            try {
-                const arrayData = this.resolveFluentPath(content, config.arrayPath);
-                if (Array.isArray(arrayData)) {
-                    const configEntities = this.extractArrayData(arrayData, config, filePath, fileName);
-                    entities.push(...configEntities);
+        // First try auto-detection if no configs are enabled or available
+        const enabledConfigs = configs.filter(c => c.enabled);
+        if (enabledConfigs.length === 0) {
+            const autoDetectedEntities = this.autoDetectTimelineArrays(content, filePath, fileName);
+            entities.push(...autoDetectedEntities);
+        } else {
+            // Use provided configurations
+            for (const config of enabledConfigs) {
+                try {
+                    const arrayData = this.resolveFluentPath(content, config.arrayPath);
+                    if (Array.isArray(arrayData)) {
+                        const configEntities = this.extractArrayData(arrayData, config, filePath, fileName);
+                        entities.push(...configEntities);
+                    }
+                } catch (error) {
+                    console.warn(`Failed to extract data for config ${config.name}:`, error);
                 }
-            } catch (error) {
-                console.warn(`Failed to extract data for config ${config.name}:`, error);
             }
         }
 
@@ -28,6 +34,212 @@ export class JsonParserService {
             content,
             entities
         };
+    }
+
+    /**
+     * Auto-detect timeline arrays in JSON based on common patterns
+     */
+    public autoDetectTimelineArrays(content: any, filePath: string, fileName: string): TimelineEntity[] {
+        const entities: TimelineEntity[] = [];
+        
+        // Recursively search for arrays that might contain timeline data
+        this.searchForTimelineArrays(content, '', entities, filePath, fileName);
+        
+        return entities;
+    }
+
+    /**
+     * Recursively search for arrays that contain timeline data
+     */
+    private searchForTimelineArrays(
+        obj: any, 
+        currentPath: string, 
+        entities: TimelineEntity[], 
+        filePath: string, 
+        fileName: string
+    ): void {
+        if (!obj || typeof obj !== 'object') return;
+
+        for (const [key, value] of Object.entries(obj)) {
+            const fullPath = currentPath ? `${currentPath}.${key}` : key;
+            
+            if (Array.isArray(value) && value.length > 0) {
+                // Check if this array contains timeline data
+                const timelineItems = this.extractTimelineFromArray(value, key, filePath, fileName);
+                if (timelineItems.length > 0) {
+                    entities.push(...timelineItems);
+                }
+            } else if (typeof value === 'object' && value !== null) {
+                // Recursively search nested objects
+                this.searchForTimelineArrays(value, fullPath, entities, filePath, fileName);
+            }
+        }
+    }
+
+    /**
+     * Extract timeline entities from an array if it contains valid timeline data
+     */
+    private extractTimelineFromArray(
+        arrayData: any[], 
+        arrayName: string, 
+        filePath: string, 
+        fileName: string
+    ): TimelineEntity[] {
+        const entities: TimelineEntity[] = [];
+        
+        for (let i = 0; i < arrayData.length; i++) {
+            const item = arrayData[i];
+            
+            if (!item || typeof item !== 'object') continue;
+            
+            // Look for date fields with common names
+            const dateFields = this.findDateFields(item);
+            
+            if (dateFields.startDate) {
+                try {
+                    const entity = this.createAutoDetectedEntity(
+                        item, 
+                        arrayName, 
+                        dateFields, 
+                        filePath, 
+                        fileName, 
+                        i
+                    );
+                    if (entity) {
+                        entities.push(entity);
+                    }
+                } catch (error) {
+                    console.warn(`Failed to create entity from ${arrayName}[${i}]:`, error);
+                }
+            }
+        }
+        
+        return entities;
+    }
+
+    /**
+     * Find date fields in an object using common naming patterns
+     */
+    private findDateFields(item: any): { startDate?: string; endDate?: string } {
+        const startPatterns = [
+            'startDate', 'start', 'startTime', 'startDateTime', 'begin', 'beginDate',
+            'from', 'fromDate', 'createdAt', 'created', 'deployedAt', 'targetDate'
+        ];
+        
+        const endPatterns = [
+            'endDate', 'end', 'endTime', 'endDateTime', 'finish', 'finishDate',
+            'to', 'toDate', 'completedAt', 'completed', 'actualDate', 'dueDate'
+        ];
+        
+        let startDate: string | undefined;
+        let endDate: string | undefined;
+        
+        // Find start date field
+        for (const pattern of startPatterns) {
+            if (item[pattern] && this.isValidDate(item[pattern])) {
+                startDate = pattern;
+                break;
+            }
+        }
+        
+        // Find end date field
+        for (const pattern of endPatterns) {
+            if (item[pattern] && this.isValidDate(item[pattern])) {
+                endDate = pattern;
+                break;
+            }
+        }
+        
+        // If no end date found, use start date as end date (for point-in-time events)
+        if (startDate && !endDate) {
+            endDate = startDate;
+        }
+        
+        return { startDate, endDate };
+    }
+
+    /**
+     * Check if a value is a valid date
+     */
+    private isValidDate(value: any): boolean {
+        if (!value) return false;
+        
+        const date = new Date(value);
+        return !isNaN(date.getTime());
+    }
+
+    /**
+     * Create a timeline entity from auto-detected data
+     */
+    private createAutoDetectedEntity(
+        item: any,
+        arrayName: string,
+        dateFields: { startDate?: string; endDate?: string },
+        filePath: string,
+        fileName: string,
+        index: number
+    ): TimelineEntity | null {
+        if (!dateFields.startDate || !dateFields.endDate) return null;
+        
+        const startDate = new Date(item[dateFields.startDate]);
+        const endDate = new Date(item[dateFields.endDate]);
+        
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) return null;
+        
+        // Auto-detect ID field
+        const idField = this.findIdField(item);
+        const id = idField ? item[idField] : `${arrayName}-${index}`;
+        
+        // Auto-detect Y-axis value
+        const yValue = this.findYAxisValue(item);
+        
+        return {
+            id: String(id),
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+            sourceArray: arrayName,
+            sourceFile: fileName,
+            yValue,
+            originalData: item
+        };
+    }
+
+    /**
+     * Find ID field using common patterns
+     */
+    private findIdField(item: any): string | undefined {
+        const idPatterns = [
+            'id', 'ID', '_id', 'uuid', 'key', 'name', 'title', 'identifier',
+            'taskId', 'eventId', 'projectId', 'phaseId', 'sprintId', 'milestoneId',
+            'version', 'deploymentId'
+        ];
+        
+        for (const pattern of idPatterns) {
+            if (item[pattern] !== undefined && item[pattern] !== null) {
+                return pattern;
+            }
+        }
+        
+        return undefined;
+    }
+
+    /**
+     * Find Y-axis value using common patterns
+     */
+    private findYAxisValue(item: any): any {
+        const yPatterns = [
+            'priority', 'level', 'status', 'type', 'category', 'environment',
+            'team', 'assignee', 'budget', 'cost', 'value', 'importance',
+            'criticality', 'severity', 'velocity', 'capacity'
+        ];
+        
+        for (const pattern of yPatterns) {
+            if (item[pattern] !== undefined && item[pattern] !== null) {
+                return item[pattern];
+            }
+        }
+        
+        return undefined;
     }
 
     /**
@@ -67,41 +279,54 @@ export class JsonParserService {
         fileName: string, 
         index: number
     ): TimelineEntity | null {
-        // Extract start date
-        const startDateValue = this.resolveFluentPath(item, config.startDatePath);
-        const startDate = this.parseDate(startDateValue);
+        // Extract start date - REQUIRED
+        let startDate: Date | null = null;
+        try {
+            const startDateValue = this.resolveFluentPath(item, config.startDatePath);
+            startDate = this.parseDate(startDateValue);
+        } catch (error) {
+            console.warn(`Failed to extract start date for ${config.name}[${index}]:`, error);
+        }
+        
         if (!startDate) {
-            console.warn(`Invalid start date for item ${index}: ${startDateValue}`);
+            console.warn(`Skipping item ${index} in ${config.name}: no valid start date found`);
             return null;
         }
 
-        // Extract end date
-        const endDateValue = this.resolveFluentPath(item, config.endDatePath);
-        const endDate = this.parseDate(endDateValue);
+        // Extract end date - REQUIRED (fallback to start date if not found)
+        let endDate: Date | null = null;
+        try {
+            const endDateValue = this.resolveFluentPath(item, config.endDatePath);
+            endDate = this.parseDate(endDateValue);
+        } catch (error) {
+            console.warn(`Failed to extract end date for ${config.name}[${index}]:`, error);
+        }
+        
+        // If no end date, use start date (for point-in-time events)
         if (!endDate) {
-            console.warn(`Invalid end date for item ${index}: ${endDateValue}`);
-            return null;
+            endDate = startDate;
         }
 
-        // Extract optional Y-axis value
-        let yValue: number | undefined;
+        // Extract optional Y-axis value - OPTIONAL
+        let yValue: any = undefined;
         if (config.yAxisPath) {
-            const yAxisValue = this.resolveFluentPath(item, config.yAxisPath);
-            if (typeof yAxisValue === 'number') {
-                yValue = yAxisValue;
-            } else if (typeof yAxisValue === 'string') {
-                const parsed = parseFloat(yAxisValue);
-                if (!isNaN(parsed)) {
-                    yValue = parsed;
-                }
+            try {
+                yValue = this.resolveFluentPath(item, config.yAxisPath);
+            } catch (error) {
+                // Silently ignore Y-axis extraction errors
+                yValue = undefined;
             }
         }
 
-        // Extract ID
+        // Extract ID - OPTIONAL (generate if not found)
         let id: string;
         if (config.idPath) {
-            const idValue = this.resolveFluentPath(item, config.idPath);
-            id = String(idValue || `${config.name}-${index}`);
+            try {
+                const idValue = this.resolveFluentPath(item, config.idPath);
+                id = String(idValue || `${config.name}-${index}`);
+            } catch (error) {
+                id = `${config.name}-${index}`;
+            }
         } else {
             id = `${config.name}-${index}`;
         }
